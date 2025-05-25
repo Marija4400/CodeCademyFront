@@ -13,6 +13,8 @@ import CourseDetails from "./components/Courses/CourseDetails.jsx";
 import Settings from "./components/Settings/settings.jsx";
 import CourseWizard from "./components/Administrator/CourseWizard.jsx";
 import AccountTable from "./components/Administrator/AccountTable.jsx";
+import AssignedCourses from "./components/Child/AssignedCourses.jsx";
+import AssignedCourseDetails from "./components/Child/AssignedCourseDetails.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -66,6 +68,22 @@ createRoot(document.getElementById("root")).render(
           element={
             <MainLayout>
               <AccountTable />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/assignedCourses"
+          element={
+            <MainLayout>
+              <AssignedCourses />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/assignedCourseDetails"
+          element={
+            <MainLayout>
+              <AssignedCourseDetails />
             </MainLayout>
           }
         />

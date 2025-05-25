@@ -80,6 +80,12 @@ const DashboardHeader = () => {
               >
                 Accounts{" "}
               </p>
+              <p
+                className="cursor-pointer"
+                onClick={() => navigate("/assignedCourses")}
+              >
+                Dete{" "}
+              </p>
             </div>
           </div>
 

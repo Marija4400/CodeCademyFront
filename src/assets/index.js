@@ -105,6 +105,10 @@ import scifiArrow from "./svg/scifi-arrow.svg";
 import strelica_meni from "./strelica_meni.png";
 import heroBackgroundNew from "./hero/heroBackgroundNew.png";
 import tabuLogo from "./tabuLogo.png";
+
+import correct from "./audio/correct.mp3";
+import incorrect from "./audio/incorrect.mp3";
+
 export {
   image3,
   NeonGlow,
@@ -202,4 +206,6 @@ export {
   scifiArrow,
   strelica_meni,
   tabuLogo,
+  correct,
+  incorrect,
 };
