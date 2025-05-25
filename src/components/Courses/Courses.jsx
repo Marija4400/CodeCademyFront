@@ -88,7 +88,7 @@ const Courses = () => {
             >
               <ChevronLeftIcon className="w-6 h-6" />
             </button>
-            <span className="px-4 py-2 text-white bg-purple-800 rounded">
+            <span className="px-4 py-2 text-white bg-purple-700 rounded">
               Strana {currentPage} od {totalPages}
             </span>
             <button
