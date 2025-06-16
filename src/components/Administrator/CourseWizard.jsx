@@ -38,7 +38,7 @@ const CourseWizard = () => {
             alt="hero"
           />
         </div>
-        <div className="max-w-3xl p-6 mx-auto mt-48 border border-purple-600 rounded-lg shadow-md">
+        <div className="p-6 mt-48 border border-purple-600 rounded-lg shadow-md lg:mx-auto sm:px-4 lg:px-6 lg:max-w-3xl">
           {step === 1 && (
             <CourseInfoForm
               data={courseData}

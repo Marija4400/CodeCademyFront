@@ -11,7 +11,7 @@ const CourseInfoForm = ({ data, onNext, onUpdate }) => {
 
   return (
     <div>
-      <h2 className="mb-4 text-xl font-semibold">Informacije o kursu</h2>
+      <h2 className="mb-4 text-xl font-semibold ">Informacije o kursu</h2>
       <input
         type="text"
         placeholder="Naziv kursa"

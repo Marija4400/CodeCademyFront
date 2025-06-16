@@ -36,8 +36,18 @@ const AssignedCourseDetails = () => {
           title: "Test 1",
           questions: [
             {
-              question: "Šta je promenljiva?",
-              options: ["Broj", "Mesto za čuvanje vrednosti", "Funkcija"],
+              question: "conts(aa) >= 4",
+              options: ["int i = 1", "int i = 14", "int i = 155"],
+              correct: 1,
+            },
+            {
+              question: "drugoo",
+              options: ["int i = 1", "int i = 14", "int i = 155"],
+              correct: 1,
+            },
+            {
+              question: "trecee",
+              options: ["int i = 1", "int i = 14", "int i = 155"],
               correct: 1,
             },
           ],
@@ -66,6 +76,8 @@ const AssignedCourseDetails = () => {
       setCurrentIndex((prev) => ({ ...prev, item: prev.item + 1 }));
     } else if (!isLastSection) {
       setCurrentIndex({ section: currentIndex.section + 1, item: 0 });
+    } else if (isLastItem) {
+      alert("Uspesno ste zavrsili kurs!");
     }
   };
 
@@ -84,6 +96,16 @@ const AssignedCourseDetails = () => {
 
   const correctSoundRef = useRef(null);
   const wrongSoundRef = useRef(null);
+
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+
+  //OVO JE ZA PRIKAZ HTML-A kao obican tekst
+  //   const createMarkup = (htmlString) => {
+  //     return { __html: htmlString };
+  //   };
+
+  //    <div dangerouslySetInnerHTML={createMarkup(lesson?.rawHtmlContent)} />
+
   return (
     <Section>
       <div className="relative flex flex-col min-h-screen px-4 pt-10 pb-20 overflow-hidden">
@@ -147,50 +169,86 @@ const AssignedCourseDetails = () => {
             <h1 className="mb-4 text-2xl font-bold">{item.title}</h1>
 
             {isTest ? (
-              <div>
-                {item.questions.map((q, qIdx) => (
-                  <div key={qIdx} className="mb-4">
-                    <p className="font-semibold">{q.question}</p>
-                    {q.options.map((opt, optIdx) => (
+              <div className="flex flex-col justify-center border border-purple-600 ">
+                <div className="flex flex-col justify-center w-1/2 mb-4">
+                  <p className="font-semibold">
+                    {item.questions[currentQuestionIndex].question}
+                  </p>
+                  {item.questions[currentQuestionIndex].options.map(
+                    (opt, optIdx) => (
                       <div
                         key={optIdx}
-                        className="w-1/2 p-3 mb-2 ml-4 border border-purple-700 rounded-lg cursor-pointer"
+                        className="p-3 mb-2 ml-4 bg-red-400 border border-purple-700 rounded-lg cursor-pointer"
+                        onClick={() =>
+                          handleTestAnswer(currentQuestionIndex, optIdx)
+                        }
                       >
                         <label>
                           <input
                             type="radio"
-                            name={`q${qIdx}`}
-                            checked={selectedTestAnswers[qIdx] === optIdx}
-                            onChange={() => handleTestAnswer(qIdx, optIdx)}
+                            name={`q${currentQuestionIndex}`}
+                            checked={
+                              selectedTestAnswers[currentQuestionIndex] ===
+                              optIdx
+                            }
+                            onChange={() =>
+                              handleTestAnswer(currentQuestionIndex, optIdx)
+                            }
                             className="mr-2 cursor-pointer"
                           />
                           {opt}{" "}
-                          {selectedTestAnswers[qIdx] === optIdx &&
-                            (optIdx === q.correct ? "✅" : "❌")}
+                          {selectedTestAnswers[currentQuestionIndex] ===
+                            optIdx &&
+                            (optIdx ===
+                            item.questions[currentQuestionIndex].correct
+                              ? "✅"
+                              : "❌")}
                         </label>
                       </div>
-                    ))}
-                  </div>
-                ))}
+                    )
+                  )}
+                </div>
+
+                <div className="mt-6 space-x-4">
+                  <button
+                    onClick={() => {
+                      if (currentQuestionIndex === item.questions.length - 1) {
+                        markCompleted();
+                        goNext();
+                      } else {
+                        setCurrentQuestionIndex(currentQuestionIndex + 1);
+                      }
+                    }}
+                    className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+                    disabled={
+                      selectedTestAnswers[currentQuestionIndex] === undefined
+                    }
+                  >
+                    {currentQuestionIndex === item.questions.length - 1
+                      ? "Završi kurs"
+                      : "Dalje ➡️"}
+                  </button>
+                </div>
               </div>
             ) : (
-              <p className="whitespace-pre-wrap">{item.content}</p>
+              <>
+                <p className="whitespace-pre-wrap">{item.content}</p>
+                <div className="mt-6 space-x-4">
+                  <button
+                    onClick={() => {
+                      markCompleted();
+                      goNext();
+                    }}
+                    className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+                  >
+                    {currentIndex.section === course.sections.length - 1 &&
+                    currentIndex.item === items.length - 1
+                      ? "Završi kurs"
+                      : "Dalje ➡️"}
+                  </button>
+                </div>
+              </>
             )}
-
-            <div className="mt-6 space-x-4">
-              <button
-                onClick={() => {
-                  markCompleted();
-                  goNext();
-                }}
-                className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
-              >
-                {currentIndex.section === course.sections.length - 1 &&
-                currentIndex.item === items.length - 1
-                  ? "Završi kurs"
-                  : "Dalje ➡️"}
-              </button>
-            </div>
           </div>
         </div>
         <audio ref={correctSoundRef} src={correct} />

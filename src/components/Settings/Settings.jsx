@@ -13,7 +13,7 @@ const Settings = () => {
 
   return (
     <Section>
-      <div className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden">
+      <div className="relative flex flex-col items-center justify-center min-h-screen px-2 overflow-hidden">
         {/* Pozadinska slika */}
         <div className="absolute inset-0 -z-10">
           <img
@@ -23,7 +23,10 @@ const Settings = () => {
           />
         </div>
 
-        <div on className="p-10 px-20 border border-purple-600 rounded-md">
+        <div
+          on
+          className="p-5 border border-purple-600 rounded-md lg:w-1/3 lg:p-10 lg:px-20"
+        >
           <div>
             <h2 className="p-4 mb-4 text-xl font-bold">Podešavanja</h2>
             <hr className="p-2 mb-4 border-gray-400 opacity-30" />
@@ -76,18 +79,6 @@ const Settings = () => {
             <div>
               8999
               <hr className="p-3 mt-4 border-gray-400 opacity-30 " />
-            </div>
-          </div>
-
-          <div className="flex flex-col items-center justify-center ">
-            <div className="flex items-center justify-center">
-              <button className="border">Resetuj sve aktivne sesije</button>
-            </div>
-            <div className="flex justify-center mt-2 text-center">
-              <p className="w-1/2 text-xs">
-                *Resetovanjem sesije izbacujete ostale korisnike sa drugih
-                uređaja osim vašeg uređaja na kome ste trenutno logovani
-              </p>
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ import Section from "./Section";
 const Register = () => {
   return (
     <Section>
-      <div className="flex flex-col items-center justify-center min-h-screen overflow-hidden bg-n-8/60">
+      <div className="flex flex-col items-center justify-center min-h-screen px-2 overflow-hidden bg-n-8/60">
         {/* Pozadinska slika */}
         <div className="absolute inset-0 -z-10">
           <img
