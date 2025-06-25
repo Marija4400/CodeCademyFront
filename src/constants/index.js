@@ -49,17 +49,17 @@ import {
 export const navigation = [
   {
     id: "0",
-    title: "Pocetna",
-    url: "/#hero",
+    title: "Početna",
+    url: "/#ByteLearn",
   },
   {
     id: "1",
-    title: "Sadrzaj",
-    url: "/#features",
+    title: "Sadržaj",
+    url: "/#content",
   },
   {
     id: "2",
-    title: "Mogucnosti",
+    title: "Mogućnosti",
     url: "/#how-to-use",
   },
   {
@@ -82,7 +82,7 @@ export const dashboardHeader = [
   },
   {
     id: "6",
-    title: "Podesavanja",
+    title: "Podešavanja",
     url: "/#settings",
   },
 ];
@@ -149,29 +149,29 @@ export const roadmap = [
   },
 ];
 export const collabText =
-  "With smart automation and top-notch security, it's the perfect solution for teams looking to work smarter.";
+  "Uči kada god i gde god ti odgovara – preko računara, tableta ili telefona.";
 
 export const collabContent = [
   {
     id: "0",
-    title: "Seamless Integration",
+    title: "Pristup sa svih uređaja",
     text: collabText,
   },
   {
     id: "1",
-    title: "Smart Automation",
+    title: " Struktuisani kursevi",
   },
   {
     id: "2",
-    title: "Top-notch Security",
+    title: "Interaktivne vežbe",
   },
   {
     id: "3",
-    title: "Top-notch Security",
+    title: "Napredak u stvarnom vremenu",
   },
   {
     id: "4",
-    title: "Top-notch Security",
+    title: "Kvizovi i testovi za svaku temu",
   },
 ];
 
@@ -298,25 +298,25 @@ export const pricing = [
 export const benefits = [
   {
     id: "1",
-    title: "Innovative Dining Experience",
-    text: "Sets you apart from the competition and offers innovative dining experience",
+    title: "Interaktivne lekcije",
+    text: "Omogućavamo ti da učiš programiranje kroz praktične zadatke, animacije i simulacije koje olakšavaju razumevanje.",
     backgroundUrl: card1,
     iconUrl: benefitIcon1,
     imageUrl: benefitImage2,
   },
-
   {
     id: "2",
-    title: "Improved Portion Understanding",
-    text: "Customers can visualize portion sizes more accurately, reducing confusion and enhancing satisfaction with their orders.",
-    backgroundUrl: card2,
+    title: "Dostupno na svim uređajima",
+    text: "Pristupi lekcijama i zadacima sa računara, tableta ili telefona – bilo kad, bilo gde.",
+    backgroundUrl: card5,
     iconUrl: benefitIcon2,
     imageUrl: benefitImage2,
+    light: true,
   },
   {
     id: "3",
-    title: "Hygienic and Contact-Free",
-    text: "AR menus reduce the need for physical contact, offering a safer and more hygienic alternative to traditional menus.",
+    title: "Sigurno i bezbedno učenje",
+    text: "Bezbednost tvojih podataka je naš prioritet. Bez reklama, bez praćenja, bez distrakcija.",
     backgroundUrl: card3,
     iconUrl: benefitIcon4,
     imageUrl: benefitImage2,
@@ -324,8 +324,8 @@ export const benefits = [
   },
   {
     id: "4",
-    title: "Engages Customers",
-    text: "By allowing customers to interact with and explore menu items in real-time, the experience becomes more engaging and personalized.",
+    title: "Praćenje napretka",
+    text: "Prati koje si lekcije završio, koje oblasti su ti jače i gde ti treba dodatno vežbanje.",
     backgroundUrl: card4,
     iconUrl: benefitIcon1,
     imageUrl: benefitImage2,
@@ -333,18 +333,17 @@ export const benefits = [
 
   {
     id: "5",
-    title: "Boosts Social Media Buzz",
-    text: "The novelty of AR technology encourages customers to share their experience online, creating organic word-of-mouth marketing.",
-    backgroundUrl: card5,
+    title: "Učenje kroz izazove",
+    text: "Vežbaj rešavajući zadatke koji rastu u težini i razvijaj svoje algoritamsko razmišljanje kroz praksu.",
+    backgroundUrl: card2,
     iconUrl: benefitIcon2,
     imageUrl: benefitImage2,
-    light: true,
   },
 
   {
     id: "6",
-    title: "Adds the Wow Factor",
-    text: "3D AR menus captivate customers in a way traditional menus can't, making their dining experience memorable and immersive.",
+    title: "Vežbe po temama",
+    text: "Uči ono što te trenutno zanima – bilo da je to JavaScript petlje, React komponenta ili backend razvoj. Lekcije su podeljene po oblastima.",
     backgroundUrl: card6,
     iconUrl: benefitIcon3,
     imageUrl: benefitImage2,

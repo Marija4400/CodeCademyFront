@@ -117,9 +117,11 @@ const AssignedCourseDetails = () => {
             alt="hero"
           />
         </div>
-        <div className="flex h-screen px-20 mt-20 font-sans">
-          {/* leva strana */}
-          <div className="w-1/3 p-4 mr-2 overflow-y-auto border border-purple-600 rounded-lg bg-n-8">
+
+        {/* Glavni sadržaj */}
+        <div className="flex flex-col w-full gap-4 px-4 mt-10 font-sans lg:flex-row lg:px-20">
+          {/* Leva strana */}
+          <div className="w-full p-4 overflow-y-auto border border-purple-600 rounded-lg lg:w-1/3 bg-n-8 lg:h-[800px]">
             <h2 className="mb-4 text-xl font-bold">{course.title}</h2>
             {course.sections.map((sec, secIndex) => (
               <div key={secIndex} className="mb-4">
@@ -164,13 +166,14 @@ const AssignedCourseDetails = () => {
               </div>
             ))}
           </div>
-          {/* desna strana */}
-          <div className="w-2/3 p-6 border border-purple-600 rounded-lg bg-n-8">
+
+          {/* Desna strana */}
+          <div className="w-full p-6 border border-purple-600 rounded-lg lg:w-2/3 bg-n-8">
             <h1 className="mb-4 text-2xl font-bold">{item.title}</h1>
 
             {isTest ? (
-              <div className="flex flex-col justify-center border border-purple-600 ">
-                <div className="flex flex-col justify-center w-1/2 mb-4">
+              <div className="flex flex-col justify-center p-4 border border-purple-600 rounded-lg">
+                <div className="flex flex-col w-full mb-4 lg:w-1/2">
                   <p className="font-semibold">
                     {item.questions[currentQuestionIndex].question}
                   </p>
@@ -219,7 +222,7 @@ const AssignedCourseDetails = () => {
                         setCurrentQuestionIndex(currentQuestionIndex + 1);
                       }
                     }}
-                    className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+                    className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 disabled:opacity-50"
                     disabled={
                       selectedTestAnswers[currentQuestionIndex] === undefined
                     }
@@ -251,6 +254,7 @@ const AssignedCourseDetails = () => {
             )}
           </div>
         </div>
+
         <audio ref={correctSoundRef} src={correct} />
         <audio ref={wrongSoundRef} src={incorrect} />
       </div>

@@ -7,7 +7,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 
 const Courses = () => {
   const features = [
-    { id: 1, title: "Innovative Dining Experience", description: "..." },
+    { id: 1, title: "Interaktivne lekcije", description: "..." },
     { id: 2, title: "Improved Portion Understanding", description: "..." },
     { id: 3, title: "Hygienic and Contact-Free", description: "..." },
     { id: 4, title: "Innovative Dining Experience", description: "..." },

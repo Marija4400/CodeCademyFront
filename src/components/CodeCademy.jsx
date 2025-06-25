@@ -14,14 +14,14 @@ function Hero() {
       crosses
       crossesOffset="lg:translate-y-[5.25rem]"
       customPaddings
-      id="hero"
+      id="ByteLearn"
     >
       <div className="container relative" ref={parallaxRef}>
         <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
           <h1 className="mb-6 h1">
-            Otkrijte mogucnosti {` `}
+            Otkrijte mogućnosti {` `}
             <span className="relative inline-block">
-              CodeCademy-a{" "}
+              ByteLearn-a{" "}
               <img
                 src={curve}
                 className="absolute left-0 w-full top-full xl:-mt-2"
@@ -32,8 +32,8 @@ function Hero() {
             </span>
           </h1>
           <p className="max-w-3xl mx-auto mb-6 body-1 text-n-2 lg:mb-8">
-            Unleash the power of AI within Brainwave. Upgrade your productivity
-            with Brainwave, the open AI chat app.
+            Započni svoje programersko putovanje uz platformu koja učenje čini
+            jednostavnim i zanimljivim.
           </p>
         </div>
         <div className="relative max-w-[23rem] mx-auto md:max-w-5xl xl:mb-24">
@@ -43,7 +43,7 @@ function Hero() {
               <div className="aspect-[33/40] rounded-b-[0.9rem] overflow-hidden md:aspect-[688/490] lg:aspect-[1024/490]">
                 <img
                   src={image3}
-                  className="w-full scale-[1.7] translate-y-[8%] md:scale-[1] md:-translate-y-[10%] lg:-translate-y-[23%]"
+                  className="w-full scale-[1.7] translate-y-[8%] md:scale-[1] md:-translate-y-[10%] lg:-translate-y-[13%]"
                   width={1024}
                   height={490}
                   alt="AI"

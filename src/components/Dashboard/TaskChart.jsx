@@ -6,7 +6,7 @@ const TaskChart = () => {
     height: 300,
     series: [
       {
-        name: "Zavrseni zadaci",
+        name: "Završeni zadaci",
         data: [1, 2, 3, 2, 4, 3, 5], // Ovdje stavi broj uradjenih zadataka za 7 dana
       },
     ],
@@ -21,7 +21,7 @@ const TaskChart = () => {
         },
       },
       title: {
-        text: "Zavrseni zadaci na nedeljnom niovu",
+        text: "Završeni zadaci na nedeljnom niovu",
         align: "center",
       },
       xaxis: {
@@ -29,7 +29,7 @@ const TaskChart = () => {
           "Ponedeljak",
           "Utorak",
           "Sreda",
-          "Cetvrtak",
+          "Četvrtak",
           "Petak",
           "Subota",
           "Nedelja",

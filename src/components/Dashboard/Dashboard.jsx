@@ -67,8 +67,9 @@ const Dashboard = () => {
           <div className="w-full h-auto p-4 border border-purple-600 rounded-lg shadow-md lg:w-1/3 bg-opacity-30">
             <h2 className="mb-4 text-xl font-semibold">Kreirani nalozi</h2>
             <p className="text-sm text-gray-500">
-              Ovde možete napraviti account za vaše dete, i pomoću QR koda da ga
-              logujete na drugi računar preko koga će pristupiti kursu.
+              Ovde možete napraviti nalog za vaše dete, i pomoću QR koda ili
+              kredencijala da ga logujete na drugi računar preko koga će
+              pristupiti kursu.
             </p>
 
             <div className="mt-8">

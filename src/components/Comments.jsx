@@ -27,7 +27,7 @@ const Comments = ({ comments }) => {
   };
   return (
     <Section crosses id="comments">
-      <div className="relative w-full max-w-full py-8 mx-auto px-52">
+      <div className="relative w-full max-w-full px-8 py-8 mx-auto lg:px-52">
         <h2 className="mb-6 text-2xl font-semibold text-center">Komentari</h2>
 
         {/* Strelice */}
