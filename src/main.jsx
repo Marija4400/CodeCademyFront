@@ -15,6 +15,7 @@ import CourseWizard from "./components/Administrator/CourseWizard.jsx";
 import AccountTable from "./components/Administrator/AccountTable.jsx";
 import AssignedCourses from "./components/Child/AssignedCourses.jsx";
 import AssignedCourseDetails from "./components/Child/AssignedCourseDetails.jsx";
+import CodeQuiz from "./components/Quizes/CodeQuiz.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -84,6 +85,14 @@ createRoot(document.getElementById("root")).render(
           element={
             <MainLayout>
               <AssignedCourseDetails />
+            </MainLayout>
+          }
+        />
+        <Route
+          path="/codeQuiz"
+          element={
+            <MainLayout>
+              <CodeQuiz />
             </MainLayout>
           }
         />

@@ -5,9 +5,11 @@ import { BackgroundCircles, BottomLine, Gradient } from "./design/Hero";
 import { heroIcons } from "../constants";
 import { ScrollParallax } from "react-just-parallax";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Hero() {
   const parallaxRef = useRef(null);
+  const navigate = useNavigate();
   return (
     <Section
       className="pt-[12rem] -mt-[5.25rem]"
@@ -35,6 +37,22 @@ function Hero() {
             Započni svoje programersko putovanje uz platformu koja učenje čini
             jednostavnim i zanimljivim.
           </p>
+          <div className="flex items-center justify-center sm:hidden">
+            <div className="flex flex-col space-y-4 ">
+              <button
+                className="px-6 py-2 text-white border border-purple-600 rounded-md bg-opacity-90"
+                onClick={() => navigate("/login")}
+              >
+                Prijavi se
+              </button>
+              <button
+                className="px-6 py-2 text-white border border-purple-600 rounded-md g-opacity-90 "
+                onClick={() => navigate("/register")}
+              >
+                Registruj se
+              </button>
+            </div>
+          </div>
         </div>
         <div className="relative max-w-[23rem] mx-auto md:max-w-5xl xl:mb-24">
           <div className="relative z-1 p-0.5 rounded-2xl bg-conic-gradient">

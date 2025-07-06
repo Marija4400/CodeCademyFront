@@ -86,6 +86,12 @@ const DashboardHeader = () => {
               >
                 Dete{" "}
               </p>
+              <p
+                className="cursor-pointer"
+                onClick={() => navigate("/codeQuiz")}
+              >
+                Kviz{" "}
+              </p>
             </div>
           </div>
 

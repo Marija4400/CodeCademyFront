@@ -18,6 +18,7 @@ const Login = () => {
       setError("Pogrešan username ili lozinka");
     }
   };
+
   return (
     <Section>
       <div className="relative flex flex-col items-center justify-center min-h-screen px-2 overflow-hidden">
@@ -34,7 +35,10 @@ const Login = () => {
         <div className="flex flex-col w-full max-w-6xl overflow-hidden border rounded-lg shadow-2xl md:flex-row border-fuchsia-500 bg-primary-300/90 dark:bg-primary-750/90 backdrop-blur-md">
           {/* Leva strana */}
           <div className="w-full p-6 text-white md:w-1/2 md:p-10 bg-opacity-90">
-            <h2 className="flex items-center gap-2 mb-6 text-2xl font-bold md:text-3xl">
+            <h2
+              className="flex items-center gap-2 mb-6 text-2xl font-bold cursor-pointer md:text-3xl"
+              onClick={() => navigate("/")}
+            >
               🏆 CodeCademy
             </h2>
             <ul className="space-y-3 text-fuchsia-200">
