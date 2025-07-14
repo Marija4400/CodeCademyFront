@@ -92,6 +92,12 @@ const DashboardHeader = () => {
               >
                 Kviz{" "}
               </p>
+              <p
+                className="cursor-pointer"
+                onClick={() => navigate("/createQuiz")}
+              >
+                Kreiraj kviz{" "}
+              </p>
             </div>
           </div>
 

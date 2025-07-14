@@ -25,7 +25,7 @@ const Dashboard = () => {
     // Ovde ide logika za slanje na backend
     console.log("Kreiran nalog:", { username, password });
 
-    // Resetovanje i zatvaranje
+    // Resetovanje i zatvaranje popup prozora
     setUsername("");
     setPassword("");
     setIsOpen(false);
@@ -41,7 +41,6 @@ const Dashboard = () => {
           />
         </div>
 
-        {/* Responsive layout */}
         <div className="flex flex-col items-start justify-between w-full lg:px-24 lg:flex-row lg:gap-10">
           {/* Leva kolona */}
           <div className="flex flex-col w-full lg:w-2/3">
@@ -67,7 +66,7 @@ const Dashboard = () => {
           <div className="w-full h-auto p-4 border border-purple-600 rounded-lg shadow-md lg:w-1/3 bg-opacity-30">
             <h2 className="mb-4 text-xl font-semibold">Kreirani nalozi</h2>
             <p className="text-sm text-gray-500">
-              Ovde možete napraviti nalog za vaše dete, i pomoću QR koda ili
+              Ovde možete napraviti nalog za vaše dete, i pomoću dodeljenih
               kredencijala da ga logujete na drugi računar preko koga će
               pristupiti kursu.
             </p>
