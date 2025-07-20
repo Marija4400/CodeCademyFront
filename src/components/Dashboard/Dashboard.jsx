@@ -25,8 +25,6 @@ const Dashboard = () => {
     dispatch(getChildren());
   }, [dispatch]);
 
-  console.log("Current children in state:", children);
-
   const handleCreateAccount = async () => {
     if (!username.trim() || !password.trim()) {
       alert("Popunite sva polja.");

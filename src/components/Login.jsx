@@ -4,9 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import Section from "./Section";
 import { NeonGlow } from "../assets";
 import { login } from "../api/services/authService";
+import { loginChild } from "@/api/services/childService";
 
 const Login = () => {
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    role: "",
+  });
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -14,15 +19,21 @@ const Login = () => {
     (state) => state.auth
   );
 
-  // Ako je korisnik već ulogovan, preusmeri ga na dashboard
   useEffect(() => {
+    const type = localStorage.getItem("type");
+
     if (isAuthenticated) {
-      navigate("/dashboard");
+      if (type === "parent") {
+        navigate("/dashboard");
+      } else if (type === "child") {
+        navigate("/assignedCourses");
+      }
     }
-  }, [isAuthenticated, user, navigate]);
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     dispatch(login(formData));
   };
 
@@ -129,8 +140,11 @@ const Login = () => {
                   }
                   className="w-full px-4 py-2 text-white bg-gray-900 rounded-md focus:outline-none focus:ring-1 focus:ring-fuchsia-500"
                 >
-                  <option value="Roditelj">Roditelj</option>
-                  <option value="Dete">Dete</option>
+                  <option value="" disabled hidden>
+                    Izaberite rolu
+                  </option>
+                  <option value="parent">Roditelj</option>
+                  <option value="child">Dete</option>
                 </select>
               </div>
 

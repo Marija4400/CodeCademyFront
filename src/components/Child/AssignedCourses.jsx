@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Section from "../Section";
 import { NeonGlow } from "../../assets";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import AssignedCourseCard from "./AssignedCourseCard";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllCoursesC } from "@/api/services/childService";
 
 const AssignedCourses = () => {
   const assignedCourses = [
@@ -23,6 +25,15 @@ const AssignedCourses = () => {
     startIndex,
     startIndex + itemsPerPage
   );
+
+  const dispatch = useDispatch();
+  const { coursesC, loading, error } = useSelector((state) => state.courseC);
+
+  useEffect(() => {
+    dispatch(getAllCoursesC());
+  }, [dispatch]);
+
+  console.log("Current courses in state:", coursesC);
   return (
     <Section>
       <div className="relative flex flex-col min-h-screen px-4 pt-10 pb-20 overflow-hidden">

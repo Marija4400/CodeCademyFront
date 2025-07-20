@@ -1,5 +1,11 @@
 import axios from "axios";
-import { logout, setError, setUser, startLoading, stopLoading } from "../slices/authSlice";
+import {
+  logout,
+  setError,
+  setUser,
+  startLoading,
+  stopLoading,
+} from "../slices/authSlice";
 
 // ------------------------------------- Async thunk for user registration ---------------------------------
 export const register = (userData) => async (dispatch) => {
@@ -19,7 +25,8 @@ export const register = (userData) => async (dispatch) => {
     }
   } catch (error) {
     console.error("Registration error:", error);
-    const errorMessage = error.response?.data?.message || error.message || "Registration failed";
+    const errorMessage =
+      error.response?.data?.message || error.message || "Registration failed";
     dispatch(setError(errorMessage));
     throw error;
   }
@@ -31,26 +38,27 @@ export const login = (credentials) => async (dispatch) => {
     dispatch(startLoading());
 
     const response = await axios.post(
-      "http://localhost:9001/api/v1/auth/login",
+      `http://localhost:9001/api/v1/auth/login/${credentials.role}`,
       credentials
     );
 
     if (response.data && response.data.data) {
-      const { token, user } = response.data.data;
-      
+      const { token, user, type } = response.data.data;
+      console.log("Login response:", response.data);
       // Store token in localStorage
       localStorage.setItem("token", token);
-      
+      localStorage.setItem("type", type);
       // Set user data in Redux store
       dispatch(setUser(user));
-      
+
       return user;
     } else {
       throw new Error("Invalid response format");
     }
   } catch (error) {
     console.error("Login error:", error);
-    const errorMessage = error.response?.data?.message || error.message || "Login failed";
+    const errorMessage =
+      error.response?.data?.message || error.message || "Login failed";
     dispatch(setError(errorMessage));
     throw error;
   }
@@ -63,11 +71,11 @@ export const loadUser = (token) => async (dispatch) => {
       "http://localhost:9001/api/v1/user/userdetails",
       {
         headers: {
-          "Auth-Token": token
+          "Auth-Token": token,
         },
       }
     );
-    
+
     if (response.data && response.data.data && response.data.data.user) {
       dispatch(setUser(response.data.data.user));
     } else {
@@ -75,7 +83,8 @@ export const loadUser = (token) => async (dispatch) => {
     }
   } catch (error) {
     console.error("Load user error:", error);
-    const errorMessage = error.response?.data?.message || error.message || "Failed to load user";
+    const errorMessage =
+      error.response?.data?.message || error.message || "Failed to load user";
     dispatch(setError(errorMessage));
     throw error;
   }
@@ -96,8 +105,8 @@ export const updatePassword = (passwords) => async (dispatch) => {
       passwords,
       {
         headers: {
-          "Auth-Token": token
-        }
+          "Auth-Token": token,
+        },
       }
     );
 
@@ -109,7 +118,10 @@ export const updatePassword = (passwords) => async (dispatch) => {
     }
   } catch (error) {
     console.error("Update password error:", error);
-    const errorMessage = error.response?.data?.message || error.message || "Failed to update password";
+    const errorMessage =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to update password";
     dispatch(setError(errorMessage));
     throw error;
   }
@@ -120,7 +132,7 @@ export const logoutUser = () => (dispatch) => {
   try {
     // Remove token from localStorage
     localStorage.removeItem("token");
-    
+
     // Clear user data from Redux store
     dispatch(logout());
   } catch (error) {
@@ -133,5 +145,5 @@ export const authService = {
   register,
   loadUser,
   logoutUser,
-  updatePassword
+  updatePassword,
 };

@@ -4,6 +4,7 @@ import { persistStore, persistReducer } from "redux-persist";
 import authReducer from "./api/slices/authSlice";
 import parentReducer from "./api/slices/parentSLice";
 import courseReducer from "./api/slices/courseSlice";
+import courseCReducer from "./api/slices/childSlice";
 
 const persistConfig = {
   key: "root",
@@ -17,7 +18,8 @@ export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     parent: parentReducer,
-    course: courseReducer
+    course: courseReducer,
+    courseC: courseCReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

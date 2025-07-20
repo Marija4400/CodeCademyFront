@@ -21,6 +21,7 @@ export const getChildren = () => async (dispatch) => {
       {
         headers: {
           "Auth-Token": token,
+          "Child-Token": token,
         },
       }
     );
