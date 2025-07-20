@@ -17,16 +17,15 @@ const Dashboard = () => {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  const { loading, error, success, children } = useSelector(
+  const { loading, error, children, success } = useSelector(
     (state) => state.parent
   );
 
-  // Fetch children accounts when component mounts
   useEffect(() => {
     dispatch(getChildren());
-  }, [dispatch]); // Remove children from dependency array to prevent infinite loop
+  }, [dispatch]);
 
-  console.log("aa", children);
+  console.log("Current children in state:", children);
 
   const handleCreateAccount = async () => {
     if (!username.trim() || !password.trim()) {
@@ -87,7 +86,9 @@ const Dashboard = () => {
             </p>
 
             <div className="mt-8">
-              <CreatedAccoutTable accounts={children || []} />
+              <CreatedAccoutTable
+                accounts={Array.isArray(children) ? children : []}
+              />
             </div>
 
             <div className="flex justify-center mt-6">

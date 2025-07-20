@@ -81,6 +81,40 @@ export const loadUser = (token) => async (dispatch) => {
   }
 };
 
+// Update password
+export const updatePassword = (passwords) => async (dispatch) => {
+  try {
+    dispatch(startLoading());
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const response = await axios.put(
+      "http://localhost:9001/api/v1/user/update",
+      passwords,
+      {
+        headers: {
+          "Auth-Token": token
+        }
+      }
+    );
+
+    if (response.data && response.data.data) {
+      dispatch(stopLoading());
+      return response.data.data;
+    } else {
+      throw new Error("Invalid response format");
+    }
+  } catch (error) {
+    console.error("Update password error:", error);
+    const errorMessage = error.response?.data?.message || error.message || "Failed to update password";
+    dispatch(setError(errorMessage));
+    throw error;
+  }
+};
+
 // --------------------------- Async thunk for user logout ---------------------------
 export const logoutUser = () => (dispatch) => {
   try {
@@ -98,5 +132,6 @@ export const authService = {
   login,
   register,
   loadUser,
-  logoutUser
+  logoutUser,
+  updatePassword
 };

@@ -6,6 +6,93 @@ import {
   setChildren,
 } from "../slices/parentSLice";
 
+// Get all children accounts
+export const getChildren = () => async (dispatch) => {
+  dispatch(startLoading());
+
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const response = await axios.get(
+      "http://localhost:9001/api/v1/user/children",
+      {
+        headers: {
+          "Auth-Token": token,
+        },
+      }
+    );
+
+    console.log("Children response:", response.data);
+
+    const rawData = response.data?.data;
+
+    const childrenArray = Array.isArray(rawData)
+      ? rawData
+      : Array.isArray(rawData?.children)
+      ? rawData.children
+      : [];
+
+    console.log("Children array:", childrenArray);
+    dispatch(setChildren(childrenArray));
+  } catch (error) {
+    console.error("Get children error:", error);
+    const errorMessage =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to fetch children accounts";
+
+    dispatch(setError(errorMessage));
+    dispatch(setChildren([])); // Clear any old data
+  } finally {
+    dispatch(stopLoading());
+  }
+};
+
+// Update child account
+export const updateChild = (childId, updateData) => async (dispatch) => {
+  try {
+    dispatch(startLoading());
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("No authentication token found");
+    }
+
+    const response = await axios.put(
+      `http://localhost:9001/api/v1/child/update/${childId}`,
+      {
+        id: childId,
+        ...updateData,
+      },
+      {
+        headers: {
+          "Auth-Token": token,
+        },
+      }
+    );
+
+    if (response.data && response.data.data) {
+      dispatch(stopLoading());
+      // Refresh the children list to get updated data
+      await dispatch(getChildren());
+      return response.data.data;
+    } else {
+      throw new Error("Invalid response format");
+    }
+  } catch (error) {
+    console.error("Update child error:", error);
+    const errorMessage =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to update child account";
+    dispatch(setError(errorMessage));
+    throw error;
+  }
+};
+
 // Delete child account
 export const deleteChild = (childId) => async (dispatch) => {
   try {
@@ -44,92 +131,6 @@ export const deleteChild = (childId) => async (dispatch) => {
   }
 };
 
-// Get all children accounts
-export const getChildren = () => async (dispatch) => {
-  try {
-    dispatch(startLoading());
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("No authentication token found");
-    }
-
-    const response = await axios.get(
-      "http://localhost:9001/api/v1/user/children",
-      {
-        headers: {
-          "Auth-Token": token,
-        },
-      }
-    );
-
-    if (response.data && response.data.data && response.data.data.children) {
-      // Get the children array from the nested structure
-      const childrenArray = Array.isArray(response.data.data.children)
-        ? response.data.data.children
-        : [];
-
-      dispatch(setChildren(childrenArray));
-      dispatch(stopLoading());
-      return childrenArray;
-    } else {
-      dispatch(setChildren([]));
-      throw new Error("Invalid response format");
-    }
-  } catch (error) {
-    console.error("Get children error:", error);
-    const errorMessage =
-      error.response?.data?.message ||
-      error.message ||
-      "Failed to fetch children accounts";
-    dispatch(setError(errorMessage));
-    dispatch(setChildren([])); // Set empty array on error
-    throw error;
-  }
-};
-
-// Update child account
-export const updateChild = (childId, updateData) => async (dispatch) => {
-  try {
-    dispatch(startLoading());
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("No authentication token found");
-    }
-
-    const response = await axios.put(
-      "http://localhost:9001/api/v1/user/update",
-      {
-        id: childId,
-        ...updateData
-      },
-      {
-        headers: {
-          "Auth-Token": token,
-        },
-      }
-    );
-
-    if (response.data && response.data.data) {
-      dispatch(stopLoading());
-      // Refresh the children list to get updated data
-      await dispatch(getChildren());
-      return response.data.data;
-    } else {
-      throw new Error("Invalid response format");
-    }
-  } catch (error) {
-    console.error("Update child error:", error);
-    const errorMessage =
-      error.response?.data?.message ||
-      error.message ||
-      "Failed to update child account";
-    dispatch(setError(errorMessage));
-    throw error;
-  }
-};
-
 // Add course to child
 export const addCourseToChild = (childId, courseId) => async (dispatch) => {
   try {
@@ -144,7 +145,7 @@ export const addCourseToChild = (childId, courseId) => async (dispatch) => {
       "http://localhost:9001/api/v1/user/addCourse",
       {
         childId,
-        courseId
+        courseId,
       },
       {
         headers: {
@@ -209,12 +210,4 @@ export const createChildrenProfile = (childData) => async (dispatch) => {
     dispatch(setError(errorMessage));
     throw error;
   }
-};
-
-export const parentService = {
-  createChildrenProfile,
-  getChildren,
-  addCourseToChild,
-  updateChild,
-  deleteChild
 };
