@@ -106,7 +106,7 @@ root.render(
               }
             />
             <Route
-              path="/assignedCourseDetails"
+              path="/assignedCourseDetails/:id"
               element={
                 <PrivateRoute>
                   <MainLayout>

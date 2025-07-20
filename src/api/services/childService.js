@@ -18,7 +18,7 @@ export const getAllCoursesC = () => async (dispatch) => {
       "http://localhost:9001/api/v1/course/c/all",
       {
         headers: {
-          "Auth-Token": token,
+          "Child-Token": token,
         },
       }
     );

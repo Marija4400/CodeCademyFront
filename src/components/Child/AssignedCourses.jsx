@@ -33,7 +33,6 @@ const AssignedCourses = () => {
     dispatch(getAllCoursesC());
   }, [dispatch]);
 
-  console.log("Current courses in state:", coursesC);
   return (
     <Section>
       <div className="relative flex flex-col min-h-screen px-4 pt-10 pb-20 overflow-hidden">
@@ -47,8 +46,8 @@ const AssignedCourses = () => {
         </div>
         {/* Grid */}
         <div className="grid w-full max-w-screen-xl grid-cols-1 gap-6 mx-auto mt-20 sm:grid-cols-2 lg:grid-cols-3">
-          {currentItems.length > 0 ? (
-            currentItems.map((feature) => (
+          {coursesC.length > 0 ? (
+            coursesC.map((feature) => (
               <AssignedCourseCard key={feature.id} {...feature} />
             ))
           ) : (
