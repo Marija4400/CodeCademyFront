@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  sections: [],
+  tests: [],
   loading: false,
   error: null,
 };
 
-const childCourseSectionSlice = createSlice({
-  name: "childCourseSection",
+const testChildSlice = createSlice({
+  name: "testChild",
   initialState,
   reducers: {
     startLoading: (state) => {
@@ -17,17 +17,19 @@ const childCourseSectionSlice = createSlice({
     stopLoading: (state) => {
       state.loading = false;
     },
-    setSections: (state, action) => {
-      state.sections = action.payload;
+    setTests: (state, action) => {
+      state.tests = action.payload;
       state.loading = false;
-      state.error = null;
     },
     setError: (state, action) => {
       state.error = action.payload;
       state.loading = false;
     },
-    clearSections: (state) => {
-      state.sections = [];
+    clearError: (state) => {
+      state.error = null;
+    },
+    clearTests: (state) => {
+      state.tests = [];
     },
   },
 });
@@ -35,9 +37,10 @@ const childCourseSectionSlice = createSlice({
 export const {
   startLoading,
   stopLoading,
-  setSections,
+  setTests,
   setError,
-  clearSections,
-} = childCourseSectionSlice.actions;
+  clearError,
+  clearTests,
+} = testChildSlice.actions;
 
-export default childCourseSectionSlice.reducer;
+export default testChildSlice.reducer;

@@ -7,7 +7,7 @@ import {
   clearQuizzes,
 } from "../slices/quizChildSlice";
 
-// Dohvatanje kvizova za dete za određeni kurs
+// get quizzes for a specific course
 export const getCourseQuizzesC = (courseId) => async (dispatch) => {
   try {
     dispatch(startLoading());

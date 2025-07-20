@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
-import { brainwave, codeCademy } from "../assets";
-import { dashboardHeader, navigation } from "../constants";
+import { codeCademy } from "../assets";
 import Button from "./Button";
 import MenuSvg from "../assets/svg/MenuSvg";
 import { HamburgerMenu } from "./design/Header";
@@ -21,7 +20,7 @@ const DashboardHeader = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Preuzmi tip korisnika iz localStorage
+  //  tip korisnika iz localStorage
   const userType = localStorage.getItem("type");
 
   return (

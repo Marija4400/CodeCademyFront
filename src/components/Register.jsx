@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { heroBackgroundNew, NeonGlow } from "../assets";
+import { NeonGlow } from "../assets";
 import Section from "./Section";
 import { register } from "../api/services/authService";
 import InfoPopup from "./InfoPopup";
@@ -88,7 +88,7 @@ const Register = () => {
               className="w-full px-4 py-3 text-white bg-gray-800 border rounded placeholder-fuchsia-300 border-fuchsia-500 focus:outline-none focus:ring-2 focus:ring-fuchsia-400"
               required
             />
-            
+
             {error && <div className="text-sm text-red-500">{error}</div>}
 
             <button

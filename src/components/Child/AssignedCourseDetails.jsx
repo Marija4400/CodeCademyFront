@@ -17,7 +17,7 @@ const AssignedCourseDetails = () => {
     dispatch(getCourseQuizzesC(id));
   }, [dispatch, id]);
 
-  // Kombinujemo sekcije i kviz
+  // show sections and quizzes in the left sidebar
   const sectionItems = sections.map((sec, index) => ({
     ...sec,
     type: "section",

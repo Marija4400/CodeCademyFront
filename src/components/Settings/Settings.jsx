@@ -1,20 +1,20 @@
 import { useState } from "react";
 import PasswordModal from "./PasswordModal";
 import Section from "../Section";
-import { heroBackgroundNew, NeonGlow } from "../../assets";
+import { NeonGlow } from "../../assets";
+import { useSelector } from "react-redux";
 
 const Settings = () => {
   const [showModal, setShowModal] = useState(false);
-
-  const user = {
-    username: "korisnik123",
-    phone: "+381 64 123 4567",
-  };
-
+  const { user } = useSelector((state) => state.auth);
+  // const user = {
+  //   username: "korisnik123",
+  //   phone: "+381 64 123 4567",
+  // };
+  console.log("User:", user);
   return (
     <Section>
       <div className="relative flex flex-col items-center justify-center min-h-screen px-2 overflow-hidden">
-        {/* Pozadinska slika */}
         <div className="absolute inset-0 -z-10">
           <img
             src={NeonGlow}
@@ -36,7 +36,15 @@ const Settings = () => {
               <label className="py-1 text-lg font-semibold md:text-base">
                 Email
               </label>
-              <p>emaaalllleee</p>
+              <p>{user.email}</p>
+            </div>
+          </div>
+          <div className="flex items-center justify-between mb-6 ">
+            <div className="flex justify-between w-full">
+              <label className="py-1 text-lg font-semibold md:text-base">
+                Korisničko ime
+              </label>
+              <p>{user.username}</p>
             </div>
           </div>
           <div className="flex items-center justify-between ">
@@ -57,30 +65,6 @@ const Settings = () => {
           </div>
 
           <hr className="p-2 mt-4 border-gray-400 opacity-30" />
-          <div className="flex items-center justify-between mb-8 ">
-            <label className="py-1 text-lg font-semibold md:text-base">
-              Broj telefona
-            </label>
-            <p className="flex justify-end ">065/3252001</p>
-          </div>
-          <div className="flex items-center justify-between ">
-            <div>
-              <label className="py-1 text-lg font-semibold md:text-base">
-                Broj aktivnih sesija (99)
-              </label>
-            </div>
-            <div>
-              <button className="font-bold text-blue-500 focus:outline-none">
-                Više
-              </button>
-            </div>
-          </div>
-          <div className="w-full overflow-auto max-h-64">
-            <div>
-              8999
-              <hr className="p-3 mt-4 border-gray-400 opacity-30 " />
-            </div>
-          </div>
         </div>
 
         {/* <div className="border border-purple-600 w-1/2 flex justify-center h-[600px] gap-6 ">

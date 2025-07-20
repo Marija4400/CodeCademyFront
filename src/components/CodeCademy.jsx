@@ -1,8 +1,6 @@
-import { curve, heroBackgroundNew, robot, bg, image3 } from "../assets";
+import { curve, heroBackgroundNew, image3 } from "../assets";
 import Section from "./Section";
-import Button from "./Button";
-import { BackgroundCircles, BottomLine, Gradient } from "./design/Hero";
-import { heroIcons } from "../constants";
+import { BackgroundCircles, Gradient } from "./design/Hero";
 import { ScrollParallax } from "react-just-parallax";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";

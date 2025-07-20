@@ -6,7 +6,7 @@ import {
   setChildren,
 } from "../slices/parentSLice";
 
-// Get all children accounts
+// Get all children accounts, to display them in "Dashboard" page
 export const getChildren = () => async (dispatch) => {
   dispatch(startLoading());
 
@@ -26,8 +26,6 @@ export const getChildren = () => async (dispatch) => {
       }
     );
 
-    console.log("Children response:", response.data);
-
     const rawData = response.data?.data;
 
     const childrenArray = Array.isArray(rawData)
@@ -36,7 +34,6 @@ export const getChildren = () => async (dispatch) => {
       ? rawData.children
       : [];
 
-    console.log("Children array:", childrenArray);
     dispatch(setChildren(childrenArray));
   } catch (error) {
     console.error("Get children error:", error);

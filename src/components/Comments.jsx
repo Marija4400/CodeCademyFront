@@ -5,7 +5,7 @@ const Comments = ({ comments }) => {
   const scrollRef = useRef(null);
   const [cardWidth, setCardWidth] = useState(0);
 
-  // Uzimamo širinu jedne kartice kad se komponenta učita
+  // setuje se sirina jedne kartice kad se komponenta ucita
   useEffect(() => {
     const card = scrollRef.current?.querySelector(".comment-card");
     if (card) {

@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 
-import { brainwave, codeCademy } from "../assets";
+import { codeCademy } from "../assets";
 import { navigation } from "../constants";
 import Button from "./Button";
 import MenuSvg from "../assets/svg/MenuSvg";

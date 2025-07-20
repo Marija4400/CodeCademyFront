@@ -16,10 +16,11 @@ import CourseWizard from "./components/Administrator/CourseWizard.jsx";
 import AccountTable from "./components/Administrator/AccountTable.jsx";
 import AssignedCourses from "./components/Child/AssignedCourses.jsx";
 import AssignedCourseDetails from "./components/Child/AssignedCourseDetails.jsx";
-import CodeQuiz from "./components/Quizes/CodeQuiz.jsx";
 import QuizCreator from "./components/Administrator/QuizCreator";
 import { store, persistor } from "./store";
 import PrivateRoute from "./ProvateRoute";
+import CodeQuizAll from "./components/Quizes/CodeQuizAll";
+import CodeQuiz from "./components/Quizes/CodeQuiz";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -117,6 +118,16 @@ root.render(
             />
             <Route
               path="/codeQuiz"
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <CodeQuizAll />
+                  </MainLayout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/codeQuiz/:id"
               element={
                 <PrivateRoute>
                   <MainLayout>

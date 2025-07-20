@@ -5,7 +5,7 @@ const initialState = {
   loading: false,
   error: null,
   success: false,
-  selectedCourse: null
+  selectedCourse: null,
 };
 
 const courseSlice = createSlice({
@@ -48,8 +48,8 @@ const courseSlice = createSlice({
     },
     clearSuccess: (state) => {
       state.success = false;
-    }
-  }
+    },
+  },
 });
 
 export const {
@@ -61,7 +61,7 @@ export const {
   setSelectedCourse,
   clearSelectedCourse,
   setSuccess,
-  clearSuccess
+  clearSuccess,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

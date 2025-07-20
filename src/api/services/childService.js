@@ -1,4 +1,3 @@
-// services/courseCService.js
 import axios from "axios";
 import {
   startLoading,
@@ -7,6 +6,7 @@ import {
   setError,
 } from "../slices/childSlice";
 
+// Get all courses assigned to the child
 export const getAllCoursesC = () => async (dispatch) => {
   try {
     dispatch(startLoading());
@@ -42,6 +42,7 @@ export const getAllCoursesC = () => async (dispatch) => {
   }
 };
 
+// Login user as a child
 export const loginChild = (credentials) => async (dispatch) => {
   try {
     dispatch(startLoading());

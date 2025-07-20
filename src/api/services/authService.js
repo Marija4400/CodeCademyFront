@@ -7,7 +7,7 @@ import {
   stopLoading,
 } from "../slices/authSlice";
 
-// ------------------------------------- Async thunk for user registration ---------------------------------
+// user registration
 export const register = (userData) => async (dispatch) => {
   try {
     dispatch(startLoading());
@@ -32,7 +32,7 @@ export const register = (userData) => async (dispatch) => {
   }
 };
 
-// ------------------------------------- Async thunk for user login---------------------------------
+// user login
 export const login = (credentials) => async (dispatch) => {
   try {
     dispatch(startLoading());
@@ -64,7 +64,7 @@ export const login = (credentials) => async (dispatch) => {
   }
 };
 
-// -------------------------------------------Function to make API call for loading user data ----------------------
+// load user details
 export const loadUser = (token) => async (dispatch) => {
   try {
     const response = await axios.get(
@@ -127,7 +127,7 @@ export const updatePassword = (passwords) => async (dispatch) => {
   }
 };
 
-// --------------------------- Async thunk for user logout ---------------------------
+//logout user
 export const logoutUser = () => (dispatch) => {
   try {
     // Remove token from localStorage

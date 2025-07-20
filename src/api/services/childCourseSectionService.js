@@ -1,4 +1,3 @@
-// services/childCourseSectionService.js
 import axios from "axios";
 import {
   startLoading,
@@ -8,6 +7,7 @@ import {
   clearSections,
 } from "../slices/childCourseSectionSlice";
 
+//get all sections of a assigned course
 export const getChildCourseSections = (courseId) => async (dispatch) => {
   dispatch(startLoading());
 

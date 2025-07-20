@@ -1,8 +1,6 @@
 import { useParams } from "react-router-dom";
-import Card from "../Card";
 import Section from "../Section";
 import { NeonGlow } from "../../assets";
-import Button from "../Button";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ClockIcon } from "@heroicons/react/24/outline";
@@ -15,7 +13,9 @@ const CourseDetails = () => {
   const [selectedUser, setSelectedUser] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const { loading, error, success, children } = useSelector((state) => state.parent);
+  const { loading, error, success, children } = useSelector(
+    (state) => state.parent
+  );
   const { courses } = useSelector((state) => state.course);
   const dispatch = useDispatch();
 
@@ -24,7 +24,7 @@ const CourseDetails = () => {
   }, [dispatch]);
 
   // Find the specific course based on the ID from URL
-  const course = courses.find(c => c.id === parseInt(id));
+  const course = courses.find((c) => c.id === parseInt(id));
 
   // Create a unique key for each child option
   const getChildKey = (child, index) => {
@@ -32,7 +32,9 @@ const CourseDetails = () => {
   };
 
   const handleAssignCourse = async () => {
-    const selectedChild = children.find(child => child.username === selectedUser);
+    const selectedChild = children.find(
+      (child) => child.username === selectedUser
+    );
     if (selectedChild && course) {
       try {
         await dispatch(addCourseToChild(selectedChild.id, course.id));
@@ -73,25 +75,33 @@ const CourseDetails = () => {
                 {course ? (
                   <>
                     <div className="flex items-center justify-between mb-6">
-                      <h2 className="text-2xl font-bold text-white">{course.title}</h2>
+                      <h2 className="text-2xl font-bold text-white">
+                        {course.title}
+                      </h2>
                       <span className="px-3 py-1 text-sm font-semibold text-purple-200 bg-purple-900 rounded-full">
                         Nivo {course.level}
                       </span>
                     </div>
 
                     <div className="mb-6">
-                      <h3 className="mb-2 text-lg font-semibold text-purple-300">Opis kursa</h3>
+                      <h3 className="mb-2 text-lg font-semibold text-purple-300">
+                        Opis kursa
+                      </h3>
                       <p className="text-gray-300">{course.description}</p>
                     </div>
 
                     <div className="flex items-center gap-2 mb-6">
                       <ClockIcon className="w-5 h-5 text-purple-400" />
-                      <span className="text-purple-200">Trajanje: {course.duration} minuta</span>
+                      <span className="text-purple-200">
+                        Trajanje: {course.duration} minuta
+                      </span>
                     </div>
 
                     {course.sections && course.sections.length > 0 && (
                       <div className="mb-6">
-                        <h3 className="mb-2 text-lg font-semibold text-purple-300">Sekcije</h3>
+                        <h3 className="mb-2 text-lg font-semibold text-purple-300">
+                          Sekcije
+                        </h3>
                         <ul className="space-y-2">
                           {course.sections.map((section, index) => (
                             <li key={index} className="text-gray-300">
@@ -137,14 +147,15 @@ const CourseDetails = () => {
                   className="w-full p-2 mb-4 border border-purple-600 rounded-md"
                 >
                   <option value="">-- Izaberi korisnika --</option>
-                  {Array.isArray(children) && children.map((child, index) => (
-                    <option 
-                      key={getChildKey(child, index)} 
-                      value={child.username}
-                    >
-                      {child.username}
-                    </option>
-                  ))}
+                  {Array.isArray(children) &&
+                    children.map((child, index) => (
+                      <option
+                        key={getChildKey(child, index)}
+                        value={child.username}
+                      >
+                        {child.username}
+                      </option>
+                    ))}
                 </select>
 
                 <div className="flex justify-end gap-2">

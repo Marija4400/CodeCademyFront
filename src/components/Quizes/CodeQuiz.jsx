@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "../ui/card";
 import { Button } from "../ui/button";
 import { NeonGlow } from "../../assets";
@@ -9,58 +9,38 @@ import { useWindowSize } from "react-use";
 
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import Section from "../Section";
+import { useDispatch, useSelector } from "react-redux";
+import { getCourseTestsC } from "@/api/services/testChildService";
+import { useParams } from "react-router-dom";
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const questions = [
-  {
-    id: 1,
-    prompt: "Set the number of leaves to zero.",
-    codeStart: [
-      `# Let's simulate the growth of a plant`,
-      `# Set the number of leaves to zero`,
-    ],
-    codeEnd: `print("Leaves:", leaves)`,
-    answers: [
-      { id: 1, code: "leaves = 0", correct: true },
-      { id: 2, code: "soil = 0", correct: false },
-      { id: 3, code: 'leaves = "zero"', correct: false },
-    ],
-  },
-  {
-    id: 2,
-    prompt: "Assign the value 10 to the variable 'water'.",
-    codeStart: [`# Prepare the environment for growth`, `# Assign water value`],
-    codeEnd: `print("Water:", water)`,
-    answers: [
-      { id: 1, code: "water = 10", correct: true },
-      { id: 2, code: "water == 10", correct: false },
-      { id: 3, code: "10 = water", correct: false },
-    ],
-  },
-  {
-    id: 3,
-    prompt: "Increase the number of leaves by 1.",
-    codeStart: [`leaves = 0`, `# Simulate leaf growth`],
-    codeEnd: `print("Leaves:", leaves)`,
-    answers: [
-      { id: 1, code: "leaves += 1", correct: true },
-      { id: 2, code: "leaves =+ 1", correct: false },
-      { id: 3, code: "leaves = leaves - 1", correct: false },
-    ],
-  },
-];
-
 export default function CodeQuiz() {
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const { tests } = useSelector((state) => state.testChild);
+
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selected, setSelected] = useState(null);
   const [answerLine, setAnswerLine] = useState(null);
   const [showDialog, setShowDialog] = useState(false);
   const { width, height } = useWindowSize();
 
-  const question = questions[currentQuestion];
+  useEffect(() => {
+    dispatch(getCourseTestsC(id));
+  }, [dispatch, id]);
+
+  const question = tests?.questions?.[currentQuestion];
+
+  if (!tests || !tests.questions || tests.questions.length === 0) {
+    return (
+      <Section>
+        <div className="mt-10 text-xl text-center">Nema dostupnih pitanja.</div>
+      </Section>
+    );
+  }
 
   const handleSelect = (answer) => {
     setSelected(answer.id);
@@ -68,7 +48,7 @@ export default function CodeQuiz() {
   };
 
   const handleNext = () => {
-    if (currentQuestion < questions.length - 1) {
+    if (currentQuestion < tests.questions.length - 1) {
       setSelected(null);
       setAnswerLine(null);
       setCurrentQuestion((prev) => prev + 1);
@@ -79,8 +59,8 @@ export default function CodeQuiz() {
 
   return (
     <Section>
-      <div className="relative min-h-screen px-4 pt-10 pb-20 overflow-hidden ">
-        {/* Background */}
+      <div className="relative min-h-screen px-4 pt-10 pb-20 overflow-hidden">
+        {/* Pozadina */}
         <div className="absolute inset-0 -z-10">
           <img
             src={NeonGlow}
@@ -88,29 +68,29 @@ export default function CodeQuiz() {
             alt="hero"
           />
         </div>
+
         <div className="max-w-2xl mx-auto mt-10 space-y-6">
           {showDialog && <Confetti width={width} height={height} />}
 
+          <h1 className="text-2xl font-bold text-center">{tests.title}</h1>
           <h2 className="text-xl font-semibold">
-            Question {currentQuestion + 1} of {questions.length}
+            Pitanje {currentQuestion + 1} od {tests.questions.length}
           </h2>
-          <p className="text-gray-700 dark:text-gray-300">{question.prompt}</p>
+          <p className="text-gray-700 dark:text-gray-300">
+            {question.question}
+          </p>
 
-          <Card className="p-4 font-mono text-sm text-black bg-black ">
+          <Card className="p-4 font-mono text-sm text-black bg-black">
             <pre>
-              {question.codeStart.map((line, idx) => (
-                <div key={idx}>{line}</div>
-              ))}
               {answerLine && (
                 <div
                   className={cn(
                     answerLine.correct ? "text-green-400" : "text-red-400"
                   )}
                 >
-                  {answerLine.code}
+                  {answerLine.answer}
                 </div>
               )}
-              <div>{question.codeEnd}</div>
             </pre>
           </Card>
 
@@ -126,14 +106,16 @@ export default function CodeQuiz() {
                     (answer.correct ? "border-green-500" : "border-red-500")
                 )}
               >
-                {answer.code}
+                {answer.answer}
               </Button>
             ))}
           </div>
 
           {answerLine?.correct && (
             <Button onClick={handleNext} className="mt-4">
-              {currentQuestion < questions.length - 1 ? "Next" : "Finish"}
+              {currentQuestion < tests.questions.length - 1
+                ? "Dalje"
+                : "Završi test"}
             </Button>
           )}
 
@@ -145,7 +127,7 @@ export default function CodeQuiz() {
                   Čestitamo!
                 </DialogTitle>
               </DialogHeader>
-              <p className="mt-2 text-lg">Završio si ovaj kviz! 🎉</p>
+              <p className="mt-2 text-lg">Završio si test! 🎉</p>
               <p className="mt-1 text-muted-foreground">
                 Nadamo se da ti je bilo zabavno i poučno!
               </p>

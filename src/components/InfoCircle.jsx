@@ -5,7 +5,6 @@ const InfoCircle = ({ type, searchBy, text }) => {
 
   return (
     <>
-      {/*dont show below lg max-lg:hidden */}
       <div className="w-6 ml-2 mr-2 ">
         <InformationCircleIcon
           onMouseEnter={() => setHovered(true)}

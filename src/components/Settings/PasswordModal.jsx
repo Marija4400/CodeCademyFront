@@ -4,7 +4,6 @@ import { updatePassword } from "../../api/services/authService";
 import InfoPopup from "../InfoPopup";
 
 export default function PasswordModal({ onClose }) {
-  const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showSuccess, setShowSuccess] = useState(false);

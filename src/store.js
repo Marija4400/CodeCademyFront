@@ -7,6 +7,7 @@ import courseReducer from "./api/slices/courseSlice";
 import courseCReducer from "./api/slices/childSlice";
 import quizChildReducer from "./api/slices/quizChildSlice";
 import childCourseSectionReducer from "./api/slices/childCourseSectionSlice";
+import testChildReducer from "./api/slices/testChildSlice";
 
 const persistConfig = {
   key: "root",
@@ -24,6 +25,7 @@ export const store = configureStore({
     courseC: courseCReducer,
     quizChild: quizChildReducer,
     childCourseSection: childCourseSectionReducer,
+    testChild: testChildReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
