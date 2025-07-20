@@ -1,35 +1,50 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NeonGlow } from "../../assets";
 import Item from "../Item";
 import Section from "../Section";
 import CreatedAccoutTable from "./CreatedAccoutTable";
 import TaskChart from "./TaskChart";
+import {
+  createChildrenProfile,
+  getChildren,
+} from "../../api/services/parentService";
+import InfoPopup from "../InfoPopup";
 
 const Dashboard = () => {
-  const accounts = [
-    { id: 1, username: "admin" },
-    { id: 2, username: "user1" },
-    { id: 3, username: "testuser" },
-  ];
-
   const [isOpen, setIsOpen] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleCreateAccount = () => {
+  const dispatch = useDispatch();
+  const { loading, error, success, children } = useSelector(
+    (state) => state.parent
+  );
+
+  // Fetch children accounts when component mounts
+  useEffect(() => {
+    dispatch(getChildren());
+  }, [dispatch]); // Remove children from dependency array to prevent infinite loop
+
+  console.log("aa", children);
+
+  const handleCreateAccount = async () => {
     if (!username.trim() || !password.trim()) {
       alert("Popunite sva polja.");
       return;
     }
 
-    // Ovde ide logika za slanje na backend
-    console.log("Kreiran nalog:", { username, password });
-
-    // Resetovanje i zatvaranje popup prozora
-    setUsername("");
-    setPassword("");
-    setIsOpen(false);
+    try {
+      await dispatch(createChildrenProfile({ username, password }));
+      // Reset form and close popup on success
+      setUsername("");
+      setPassword("");
+      setIsOpen(false);
+    } catch (error) {
+      console.error("Failed to create child account:", error);
+    }
   };
+
   return (
     <Section crosses id="dashboard">
       <div className="relative flex flex-col items-center justify-center min-h-screen px-4 py-8 mt-16 overflow-hidden bg-n-8/60">
@@ -72,7 +87,7 @@ const Dashboard = () => {
             </p>
 
             <div className="mt-8">
-              <CreatedAccoutTable accounts={accounts} />
+              <CreatedAccoutTable accounts={children || []} />
             </div>
 
             <div className="flex justify-center mt-6">
@@ -116,6 +131,10 @@ const Dashboard = () => {
                     />
                   </div>
 
+                  {error && (
+                    <div className="mb-4 text-sm text-red-500">{error}</div>
+                  )}
+
                   <div className="flex justify-end space-x-2">
                     <button
                       onClick={() => setIsOpen(false)}
@@ -126,8 +145,9 @@ const Dashboard = () => {
                     <button
                       onClick={handleCreateAccount}
                       className="px-4 py-2 text-white bg-purple-600 rounded hover:bg-purple-700"
+                      disabled={loading}
                     >
-                      Kreiraj
+                      {loading ? "Kreiranje..." : "Kreiraj"}
                     </button>
                   </div>
                 </div>
@@ -135,6 +155,12 @@ const Dashboard = () => {
             )}
           </div>
         </div>
+        {success && (
+          <InfoPopup
+            text="Uspešno ste kreirali nalog za dete!"
+            type="success"
+          />
+        )}
       </div>
     </Section>
   );

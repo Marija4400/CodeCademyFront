@@ -8,6 +8,8 @@ import { HamburgerMenu } from "./design/Header";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeftEndOnRectangleIcon } from "@heroicons/react/16/solid";
+import { useDispatch } from "react-redux";
+import { logout } from "../api/slices/authSlice";
 
 const DashboardHeader = () => {
   const [openNavigation, setOpenNavigation] = useState(false);
@@ -21,6 +23,7 @@ const DashboardHeader = () => {
     }
   };
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   return (
     <div
       className={`fixed top-0 left-0 w-full z-50  border-b border-n-6 lg:bg-n-8/90 lg:backdrop-blur-sm ${
@@ -107,7 +110,7 @@ const DashboardHeader = () => {
           {" "}
           <ArrowLeftEndOnRectangleIcon
             className="flex justify-end cursor-pointer w-7 h-7"
-            onClick={() => navigate("/login")}
+            onClick={() => dispatch(logout())}
           />
         </div>
 

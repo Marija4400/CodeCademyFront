@@ -1,7 +1,8 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import React from "react";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 import "./index.css";
 import App from "./App.jsx";
 import Login from "./components/Login.jsx";
@@ -17,95 +18,126 @@ import AssignedCourses from "./components/Child/AssignedCourses.jsx";
 import AssignedCourseDetails from "./components/Child/AssignedCourseDetails.jsx";
 import CodeQuiz from "./components/Quizes/CodeQuiz.jsx";
 import QuizCreator from "./components/Administrator/QuizCreator";
+import { store, persistor } from "./store";
+import PrivateRoute from "./ProvateRoute";
 
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <Router>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/dashboard"
-          element={
-            <MainLayout>
-              <Dashboard />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/courses"
-          element={
-            <MainLayout>
-              <Courses />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/courseDetails/:id"
-          element={
-            <MainLayout>
-              <CourseDetails />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/settings"
-          element={
-            <MainLayout>
-              <Settings />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/admin"
-          element={
-            <MainLayout>
-              <CourseWizard />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/accountTable"
-          element={
-            <MainLayout>
-              <AccountTable />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/assignedCourses"
-          element={
-            <MainLayout>
-              <AssignedCourses />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/assignedCourseDetails"
-          element={
-            <MainLayout>
-              <AssignedCourseDetails />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/codeQuiz"
-          element={
-            <MainLayout>
-              <CodeQuiz />
-            </MainLayout>
-          }
-        />
-        <Route
-          path="/createQuiz"
-          element={
-            <MainLayout>
-              <QuizCreator />
-            </MainLayout>
-          }
-        />
-      </Routes>
-    </Router>
-  </StrictMode>
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <React.StrictMode>
+        <Router>
+          <Routes>
+            {/* Otvorene (public) rute */}
+            <Route path="/" element={<App />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+
+            {/* Zaštićene (private) rute */}
+            <Route
+              path="/dashboard"
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <Dashboard />
+                  </MainLayout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/courses"
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <Courses />
+                  </MainLayout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/courseDetails/:id"
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <CourseDetails />
+                  </MainLayout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/settings"
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <Settings />
+                  </MainLayout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <CourseWizard />
+                  </MainLayout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/accountTable"
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <AccountTable />
+                  </MainLayout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/assignedCourses"
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <AssignedCourses />
+                  </MainLayout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/assignedCourseDetails"
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <AssignedCourseDetails />
+                  </MainLayout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/codeQuiz"
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <CodeQuiz />
+                  </MainLayout>
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/createQuiz"
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <QuizCreator />
+                  </MainLayout>
+                </PrivateRoute>
+              }
+            />
+          </Routes>
+        </Router>
+      </React.StrictMode>
+    </PersistGate>
+  </Provider>
 );

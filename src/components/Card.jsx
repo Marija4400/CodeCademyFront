@@ -1,10 +1,10 @@
-import { ArrowRightIcon, TrophyIcon } from "@heroicons/react/24/outline";
+import { ArrowRightIcon, ClockIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
 
-export default function Card({ id, title, description }) {
+export default function Card({ id, title, description, level, duration }) {
   const navigate = useNavigate();
   return (
-    <div className=" w-full sm:w-[320px] h-[300px] z-3">
+    <div className="w-full sm:w-[320px] h-[300px] z-3">
       <div
         className="p-[2px] rounded-[26px] shadow-lg"
         style={{
@@ -15,19 +15,25 @@ export default function Card({ id, title, description }) {
       >
         <div className="h-full w-full bg-[#0f0f1a] rounded-[24px] p-6 flex flex-col justify-between">
           <div>
-            <h3 className="mb-4 font-mono text-xl text-white">{title}</h3>
-            <p className="text-sm font-light text-gray-400 h-[80px]">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="font-mono text-xl text-white">{title}</h3>
+              <span className="px-2 py-1 text-xs font-semibold text-purple-200 bg-purple-900 rounded-full">
+                {level}
+              </span>
+            </div>
+            <p className="text-sm font-light text-gray-400 h-[80px] overflow-y-auto">
               {description}
             </p>
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="w-8 h-8 rounded-md mt-3 flex items-center justify-center text-[#d21cb4]">
-              <TrophyIcon className="w-5 h-5 text-white" />
+            <div className="flex justify-between gap-1 tems-center">
+              <ClockIcon className="w-5 h-5 text-purple-400" />
+              <span className="text-sm text-purple-200">{duration}</span>
             </div>
             <button
               onClick={() => navigate(`/courseDetails/${id}`)}
-              className="flex items-center gap-1 text-sm font-bold tracking-wider text-white uppercase"
+              className="flex items-center gap-1 text-sm font-bold tracking-wider text-white uppercase hover:text-purple-400 transition-colors"
             >
               Pogledaj detalje <ArrowRightIcon className="w-5 h-5" />
             </button>

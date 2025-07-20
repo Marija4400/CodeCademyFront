@@ -1,42 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Card from "../Card";
 import Section from "../Section";
 import { NeonGlow } from "../../assets";
 import SearchBar from "../SearchBar";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
+import { getAllCourses } from "../../api/services/courseService";
 
 const Courses = () => {
-  const features = [
-    { id: 1, title: "Interaktivne lekcije", description: "..." },
-    { id: 2, title: "Improved Portion Understanding", description: "..." },
-    { id: 3, title: "Hygienic and Contact-Free", description: "..." },
-    { id: 4, title: "Innovative Dining Experience", description: "..." },
-    { id: 5, title: "Improved Portion Understanding", description: "..." },
-    { id: 6, title: "Hygienic and Contact-Free", description: "..." },
-    { id: 7, title: "AAAAAA", description: "..." },
-    { id: 8, title: "IBBBBBBnding", description: "..." },
-    { id: 9, title: "CCCCCCCC", description: "..." },
-    { id: 10, title: "DDDDDD", description: "..." },
-    { id: 11, title: "RRRRRRRR", description: "..." },
-    { id: 12, title: "Hygienic and Contact-Free", description: "..." },
-  ];
-
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6;
+
+  const dispatch = useDispatch();
+  const courseState = useSelector((state) => state.course) || { courses: [], loading: false, error: null };
+  const { courses, loading, error } = courseState;
+
+  useEffect(() => {
+    dispatch(getAllCourses());
+  }, [dispatch]);
 
   const handleSearchChange = (value) => {
     setSearchTerm(value);
     setCurrentPage(1);
   };
 
-  const filteredFeatures = features.filter((feature) =>
-    feature.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredCourses = Array.isArray(courses) ? courses.filter((course) =>
+    course.title.toLowerCase().includes(searchTerm.toLowerCase())
+  ) : [];
 
-  const totalPages = Math.ceil(filteredFeatures.length / itemsPerPage);
+  const totalPages = Math.ceil(filteredCourses.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentItems = filteredFeatures.slice(
+  const currentItems = filteredCourses.slice(
     startIndex,
     startIndex + itemsPerPage
   );
@@ -64,21 +59,46 @@ const Courses = () => {
           />
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="w-16 h-16 border-4 border-purple-500 rounded-full animate-spin border-t-transparent"></div>
+          </div>
+        )}
+
+        {/* Error State */}
+        {error && (
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-xl text-red-500">{error}</div>
+          </div>
+        )}
+
         {/* Grid */}
-        <div className="grid w-full max-w-screen-xl grid-cols-1 gap-6 mx-auto sm:grid-cols-2 lg:grid-cols-3">
-          {currentItems.length > 0 ? (
-            currentItems.map((feature) => (
-              <Card key={feature.id} {...feature} />
-            ))
-          ) : (
-            <p className="text-xl text-center text-white col-span-full">
-              Traženi kurs nije pronadjen...
-            </p>
-          )}
-        </div>
+        {!loading && !error && (
+          <div className="grid w-full max-w-screen-xl grid-cols-1 gap-6 mx-auto sm:grid-cols-2 lg:grid-cols-3">
+            {currentItems.length > 0 ? (
+              currentItems.map((course) => (
+                <Card
+                  key={course.id}
+                  id={course.id}
+                  title={course.title}
+                  description={course.description}
+                  level={`Nivo ${course.level}`}
+                  duration={`${course.duration} min`}
+                />
+              ))
+            ) : (
+              <p className="text-xl text-center text-white col-span-full">
+                {searchTerm
+                  ? "Traženi kurs nije pronadjen..."
+                  : "Nema dostupnih kurseva"}
+              </p>
+            )}
+          </div>
+        )}
 
         {/* Pagination */}
-        {totalPages > 1 && (
+        {!loading && !error && totalPages > 1 && (
           <div className="flex justify-center gap-4 mt-8">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}

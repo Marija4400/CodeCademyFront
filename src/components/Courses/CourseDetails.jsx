@@ -3,18 +3,51 @@ import Card from "../Card";
 import Section from "../Section";
 import { NeonGlow } from "../../assets";
 import Button from "../Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ClockIcon } from "@heroicons/react/24/outline";
+import { getChildren, addCourseToChild } from "@/api/services/parentService";
+import InfoPopup from "../InfoPopup";
 
 const CourseDetails = () => {
   const { id } = useParams();
   const [showPopup, setShowPopup] = useState(false);
   const [selectedUser, setSelectedUser] = useState("");
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  const users = [
-    { id: 1, name: "admin1" },
-    { id: 2, name: "admin2" },
-    { id: 3, name: "profesor1" },
-  ];
+  const { loading, error, success, children } = useSelector((state) => state.parent);
+  const { courses } = useSelector((state) => state.course);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getChildren());
+  }, [dispatch]);
+
+  // Find the specific course based on the ID from URL
+  const course = courses.find(c => c.id === parseInt(id));
+
+  // Create a unique key for each child option
+  const getChildKey = (child, index) => {
+    return child.id ? `child-${child.id}` : `${child.username}-${index}`;
+  };
+
+  const handleAssignCourse = async () => {
+    const selectedChild = children.find(child => child.username === selectedUser);
+    if (selectedChild && course) {
+      try {
+        await dispatch(addCourseToChild(selectedChild.id, course.id));
+        setShowPopup(false);
+        setShowSuccess(true);
+        // Hide success message after 3 seconds
+        setTimeout(() => {
+          setShowSuccess(false);
+        }, 3000);
+      } catch (error) {
+        console.error("Failed to assign course:", error);
+      }
+    }
+  };
+
   return (
     <>
       <Section>
@@ -31,31 +64,63 @@ const CourseDetails = () => {
             {/* Leva strana */}
             <div className="w-full max-w-xl">
               <div
-                className="p-6 border rounded-lg shadow-2xl h-[500px] bg-black/10"
+                className="p-6 border rounded-lg shadow-2xl bg-black/10"
                 style={{
                   boxShadow:
                     "0 0 15px 0 rgba(88, 188, 202, 0.5), 0 0 15px 0 rgba(210, 28, 180, 0.5)",
                 }}
               >
-                <h2 className="mb-2 text-lg text-white">
-                  Ovo su detalji o kursu: {id}
-                </h2>
-                <p className="text-white">Opis</p>
-                <p className="text-white">Test</p>
-                <p className="text-white">Završni test</p>
-                <p className="text-white">Trajanje</p>
+                {course ? (
+                  <>
+                    <div className="flex items-center justify-between mb-6">
+                      <h2 className="text-2xl font-bold text-white">{course.title}</h2>
+                      <span className="px-3 py-1 text-sm font-semibold text-purple-200 bg-purple-900 rounded-full">
+                        Nivo {course.level}
+                      </span>
+                    </div>
+
+                    <div className="mb-6">
+                      <h3 className="mb-2 text-lg font-semibold text-purple-300">Opis kursa</h3>
+                      <p className="text-gray-300">{course.description}</p>
+                    </div>
+
+                    <div className="flex items-center gap-2 mb-6">
+                      <ClockIcon className="w-5 h-5 text-purple-400" />
+                      <span className="text-purple-200">Trajanje: {course.duration} minuta</span>
+                    </div>
+
+                    {course.sections && course.sections.length > 0 && (
+                      <div className="mb-6">
+                        <h3 className="mb-2 text-lg font-semibold text-purple-300">Sekcije</h3>
+                        <ul className="space-y-2">
+                          {course.sections.map((section, index) => (
+                            <li key={index} className="text-gray-300">
+                              {section}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="text-center text-white">
+                    Kurs nije pronađen
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Desna strana */}
-            <div className="flex items-center justify-center w-full max-w-md">
-              <button
-                onClick={() => setShowPopup(true)}
-                className="w-full px-6 py-3 text-lg text-white transition border border-purple-600 rounded-lg shadow-xl hover:opacity-90"
-              >
-                Dodaj kurs
-              </button>
-            </div>
+            {course && (
+              <div className="flex items-center justify-center w-full max-w-md">
+                <button
+                  onClick={() => setShowPopup(true)}
+                  className="w-full px-6 py-3 text-lg text-white transition border border-purple-600 rounded-lg shadow-xl hover:opacity-90"
+                >
+                  Dodaj kurs
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Popup */}
@@ -72,9 +137,12 @@ const CourseDetails = () => {
                   className="w-full p-2 mb-4 border border-purple-600 rounded-md"
                 >
                   <option value="">-- Izaberi korisnika --</option>
-                  {users.map((user) => (
-                    <option key={user.id} value={user.name}>
-                      {user.name}
+                  {Array.isArray(children) && children.map((child, index) => (
+                    <option 
+                      key={getChildKey(child, index)} 
+                      value={child.username}
+                    >
+                      {child.username}
                     </option>
                   ))}
                 </select>
@@ -87,22 +155,25 @@ const CourseDetails = () => {
                     Otkaži
                   </button>
                   <button
-                    onClick={() => {
-                      console.log("Odabran:", selectedUser);
-                      setShowPopup(false);
-                    }}
-                    disabled={!selectedUser}
+                    onClick={handleAssignCourse}
+                    disabled={!selectedUser || loading}
                     className="px-4 py-2 text-white bg-purple-600 rounded hover:bg-purple-700 disabled:opacity-50"
                   >
-                    Potvrdi
+                    {loading ? "Dodavanje..." : "Potvrdi"}
                   </button>
                 </div>
               </div>
             </div>
+          )}
+
+          {/* Success Message */}
+          {showSuccess && (
+            <InfoPopup text="Kurs je uspešno dodeljen!" type="success" />
           )}
         </div>
       </Section>
     </>
   );
 };
+
 export default CourseDetails;

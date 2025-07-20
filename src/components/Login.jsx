@@ -1,28 +1,34 @@
-import { CheckBadgeIcon, TrophyIcon } from "@heroicons/react/16/solid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { heroBackgroundNew, NeonGlow } from "../assets";
 import Section from "./Section";
+import { NeonGlow } from "../assets";
+import { login } from "../api/services/authService";
+
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [formData, setFormData] = useState({ username: "", password: "" });
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const { isAuthenticated, loading, error, user } = useSelector(
+    (state) => state.auth
+  );
 
-    if (username === "ad" && password === "ad") {
+  // Ako je korisnik već ulogovan, preusmeri ga na dashboard
+  useEffect(() => {
+    if (isAuthenticated) {
       navigate("/dashboard");
-    } else {
-      setError("Pogrešan username ili lozinka");
     }
+  }, [isAuthenticated, user, navigate]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(login(formData));
   };
 
   return (
     <Section>
       <div className="relative flex flex-col items-center justify-center min-h-screen px-2 overflow-hidden">
-        {/* Pozadinska slika */}
         <div className="absolute inset-0 -z-10">
           <img
             src={NeonGlow}
@@ -31,7 +37,6 @@ const Login = () => {
           />
         </div>
 
-        {/* Glavni sadržaj */}
         <div className="flex flex-col w-full max-w-6xl overflow-hidden border rounded-lg shadow-2xl md:flex-row border-fuchsia-500 bg-primary-300/90 dark:bg-primary-750/90 backdrop-blur-md">
           {/* Leva strana */}
           <div className="w-full p-6 text-white md:w-1/2 md:p-10 bg-opacity-90">
@@ -76,7 +81,7 @@ const Login = () => {
             </h2>
 
             <form
-              onSubmit={handleLogin}
+              onSubmit={handleSubmit}
               className="w-full p-4 border-2 shadow-2xl md:p-6 rounded-xl bg-black/40 border-fuchsia-500 backdrop-blur-md"
             >
               <h2 className="mb-4 text-xl font-semibold text-center text-white md:text-2xl">
@@ -85,28 +90,48 @@ const Login = () => {
 
               <div className="mb-4">
                 <label className="block mb-1 text-sm font-medium text-fuchsia-200">
-                  Email
+                  Korisničko ime
                 </label>
                 <input
                   type="text"
-                  placeholder="Unesite vas email"
+                  placeholder="Unesite vaše korisničko ime"
                   className="w-full px-4 py-2 text-white bg-gray-900 rounded-md focus:outline-none focus:ring-1 focus:ring-fuchsia-500"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
+                  value={formData.username}
+                  onChange={(e) =>
+                    setFormData({ ...formData, username: e.target.value })
+                  }
                 />
               </div>
 
               <div className="mb-4">
                 <label className="block mb-1 text-sm font-medium text-fuchsia-200">
-                  Password
+                  Lozinka
                 </label>
                 <input
                   type="password"
-                  placeholder="Unesite vasu lozinku"
+                  placeholder="Unesite vašu lozinku"
                   className="w-full px-4 py-2 text-white bg-gray-900 rounded-md focus:outline-none focus:ring-1 focus:ring-fuchsia-500"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={formData.password}
+                  onChange={(e) =>
+                    setFormData({ ...formData, password: e.target.value })
+                  }
                 />
+              </div>
+
+              <div className="mb-4">
+                <label className="block mb-1 text-sm font-medium text-fuchsia-200">
+                  Rola
+                </label>
+                <select
+                  value={formData.role}
+                  onChange={(e) =>
+                    setFormData({ ...formData, role: e.target.value })
+                  }
+                  className="w-full px-4 py-2 text-white bg-gray-900 rounded-md focus:outline-none focus:ring-1 focus:ring-fuchsia-500"
+                >
+                  <option value="Roditelj">Roditelj</option>
+                  <option value="Dete">Dete</option>
+                </select>
               </div>
 
               {error && <p className="mb-2 text-sm text-red-400">{error}</p>}
@@ -114,11 +139,12 @@ const Login = () => {
               <button
                 type="submit"
                 className="w-full py-2 mt-2 font-semibold text-white transition duration-200 border-2 rounded-md border-fuchsia-600 bg-fuchsia-700 hover:bg-fuchsia-800"
+                disabled={loading}
               >
-                Prijavi se
+                {loading ? "Prijavljivanje..." : "Prijavi se"}
               </button>
             </form>
-
+            {error && <div style={{ color: "red" }}>{error}</div>}
             <p className="mt-4 text-sm text-center text-fuchsia-300">
               Nemate nalog?{" "}
               <Link
