@@ -11,7 +11,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import Section from "../Section";
 import { useDispatch, useSelector } from "react-redux";
 import { getCourseTestsC } from "@/api/services/testChildService";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 function cn(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -20,6 +20,7 @@ function cn(...classes) {
 export default function CodeQuiz() {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { tests } = useSelector((state) => state.testChild);
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -57,10 +58,16 @@ export default function CodeQuiz() {
     }
   };
 
+  const handleDialogClose = (open) => {
+    setShowDialog(open);
+    if (!open) {
+      navigate("/codeQuiz");
+    }
+  };
+
   return (
     <Section>
       <div className="relative min-h-screen px-4 pt-10 pb-20 overflow-hidden">
-        {/* Pozadina */}
         <div className="absolute inset-0 -z-10">
           <img
             src={NeonGlow}
@@ -80,8 +87,11 @@ export default function CodeQuiz() {
             {question.question}
           </p>
 
-          <Card className="p-4 font-mono text-sm text-black bg-black">
+          <Card className="p-4 font-mono text-sm text-white whitespace-pre-wrap bg-black">
             <pre>
+              {question.codeStart?.split("`, `").map((line, idx) => (
+                <div key={`start-${idx}`}>{line}</div>
+              ))}
               {answerLine && (
                 <div
                   className={cn(
@@ -91,27 +101,37 @@ export default function CodeQuiz() {
                   {answerLine.answer}
                 </div>
               )}
+              <div>{question.codeEnd}</div>
             </pre>
           </Card>
 
           <div className="space-y-2">
-            {question.answers.map((answer) => (
-              <Button
-                key={answer.id}
-                variant="outline"
-                onClick={() => handleSelect(answer)}
-                className={cn(
-                  "w-full justify-start font-mono",
-                  selected === answer.id &&
-                    (answer.correct ? "border-green-500" : "border-red-500")
-                )}
-              >
-                {answer.answer}
-              </Button>
-            ))}
+            {question.answers.map((answer) => {
+              const isSelected = selected === answer.id;
+              const isCorrect = answer.correct;
+
+              return (
+                <Button
+                  key={answer.id}
+                  variant="outline"
+                  onClick={() => handleSelect(answer)}
+                  className={cn(
+                    "w-full justify-start font-mono",
+                    isSelected &&
+                      isCorrect &&
+                      "border-green-500 ring-2 ring-green-400",
+                    isSelected &&
+                      !isCorrect &&
+                      "border-red-500 ring-2 ring-red-400"
+                  )}
+                >
+                  {answer.answer}
+                </Button>
+              );
+            })}
           </div>
 
-          {answerLine?.correct && (
+          {answerLine && (
             <Button onClick={handleNext} className="mt-4">
               {currentQuestion < tests.questions.length - 1
                 ? "Dalje"
@@ -119,7 +139,7 @@ export default function CodeQuiz() {
             </Button>
           )}
 
-          <Dialog open={showDialog} onOpenChange={setShowDialog}>
+          <Dialog open={showDialog} onOpenChange={handleDialogClose}>
             <DialogContent className="text-center">
               <DialogHeader>
                 <DialogTitle className="flex items-center justify-center gap-2 text-2xl text-green-600">

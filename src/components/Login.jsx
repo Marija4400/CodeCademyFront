@@ -148,7 +148,11 @@ const Login = () => {
                 </select>
               </div>
 
-              {error && <p className="mb-2 text-sm text-red-400">{error}</p>}
+              {error && (
+                <p className="mb-2 text-sm text-red-400">
+                  Pogrešno korisničko ime ili lozinka
+                </p>
+              )}
 
               <button
                 type="submit"
@@ -158,7 +162,6 @@ const Login = () => {
                 {loading ? "Prijavljivanje..." : "Prijavi se"}
               </button>
             </form>
-            {error && <div style={{ color: "red" }}>{error}</div>}
             <p className="mt-4 text-sm text-center text-fuchsia-300">
               Nemate nalog?{" "}
               <Link

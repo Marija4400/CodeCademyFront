@@ -129,7 +129,7 @@ const AssignedCourseDetails = () => {
                     (opt) => (
                       <div
                         key={opt.id}
-                        className="p-3 mb-2 ml-4 bg-red-400 border border-purple-700 rounded-lg cursor-pointer"
+                        className="p-3 mb-2 ml-4 border border-purple-700 rounded-lg cursor-pointer"
                         onClick={() =>
                           handleTestAnswer(currentQuestionIndex, opt.id)
                         }
