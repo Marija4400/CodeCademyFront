@@ -30,7 +30,7 @@ const CourseWizard = () => {
 
   return (
     <Section>
-      <div className="relative items-center justify-center min-h-screen overflow-y-auto">
+      <div className="relative items-center justify-center min-h-screen overflow-y-auto ">
         <div className="absolute inset-0 -z-10">
           <img
             src={NeonGlow}

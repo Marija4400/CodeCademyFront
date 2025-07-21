@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Section from "../Section";
 import { NeonGlow } from "../../assets";
 
+//komponenta za kreiranje kviza
 const QuizCreator = () => {
   const [questions, setQuestions] = useState([
     {

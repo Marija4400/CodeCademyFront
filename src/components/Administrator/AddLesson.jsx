@@ -55,7 +55,9 @@ const LessonForm = ({ data, onNext, onBack, onUpdate }) => {
 
   return (
     <div>
-      <h2 className="mb-4 text-xl font-semibold">Dodaj lekciju</h2>
+      <h2 className="mb-4 text-xl font-semibold bg-yellow-100">
+        Dodaj lekciju
+      </h2>
 
       <input
         type="text"
