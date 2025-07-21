@@ -77,7 +77,7 @@ root.render(
               }
             />
             <Route
-              path="/admin"
+              path="/createCourse"
               element={
                 <PrivateRoute>
                   <MainLayout>

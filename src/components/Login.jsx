@@ -27,6 +27,8 @@ const Login = () => {
         navigate("/dashboard");
       } else if (type === "child") {
         navigate("/assignedCourses");
+      } else if (type === "admin") {
+        navigate("/createCourse");
       }
     }
   }, [isAuthenticated, navigate]);
@@ -145,6 +147,7 @@ const Login = () => {
                   </option>
                   <option value="parent">Roditelj</option>
                   <option value="child">Dete</option>
+                  <option value="admin">Administrator</option>
                 </select>
               </div>
 

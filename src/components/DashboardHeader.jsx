@@ -88,22 +88,22 @@ const DashboardHeader = () => {
                 <>
                   <p
                     className="cursor-pointer"
-                    onClick={() => navigate("/admin")}
+                    onClick={() => navigate("/createCourse")}
                   >
-                    Admin
+                    Kreiranje kurseva
                   </p>
                   <p
                     className="cursor-pointer"
                     onClick={() => navigate("/accountTable")}
                   >
-                    Accounts
+                    Nalozi
                   </p>
-                  <p
+                  {/* <p
                     className="cursor-pointer"
                     onClick={() => navigate("/createQuiz")}
                   >
                     Kreiraj kviz
-                  </p>
+                  </p> */}
                 </>
               )}
             </div>

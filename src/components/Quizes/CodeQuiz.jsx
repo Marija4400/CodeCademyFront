@@ -61,7 +61,8 @@ export default function CodeQuiz() {
   const handleDialogClose = (open) => {
     setShowDialog(open);
     if (!open) {
-      navigate("/codeQuiz");
+      setCurrentQuestion(0);
+      setSelected(null);
     }
   };
 
@@ -147,7 +148,7 @@ export default function CodeQuiz() {
                   Čestitamo!
                 </DialogTitle>
               </DialogHeader>
-              <p className="mt-2 text-lg">Završio si test! 🎉</p>
+              <p className="mt-2 text-lg">Kviz je završen! 🎉</p>
               <p className="mt-1 text-muted-foreground">
                 Nadamo se da ti je bilo zabavno i poučno!
               </p>
