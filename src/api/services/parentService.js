@@ -209,3 +209,28 @@ export const createChildrenProfile = (childData) => async (dispatch) => {
     throw error;
   }
 };
+
+export const getAllChildStatistics = () => async (dispatch) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No authentication token found");
+
+    const response = await axios.get(
+      "http://localhost:9001/api/v1/user/statistics/all",
+      {
+        headers: {
+          "Auth-Token": token,
+        },
+      }
+    );
+
+    if (response.data.code === 200) {
+      return response.data.data.data;
+    } else {
+      throw new Error("Unexpected response from server");
+    }
+  } catch (error) {
+    console.error("Error fetching statistics:", error);
+    throw error;
+  }
+};

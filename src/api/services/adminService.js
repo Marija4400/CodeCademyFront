@@ -72,3 +72,45 @@ export const deleteUserByAdmin = (id) => async (dispatch) => {
     throw error;
   }
 };
+
+// Admin update all accounts
+export const updateUserAccountByAdmin =
+  (userId, updateData) => async (dispatch) => {
+    try {
+      dispatch(startLoading());
+      console.log("user updateData ", updateData);
+      console.log("user id is ", userId);
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No authentication token found");
+      }
+
+      const response = await axios.put(
+        `http://localhost:9001/api/v1/user/admin/update/${userId}`,
+        {
+          ...updateData,
+        },
+        {
+          headers: {
+            "Auth-Token": token,
+          },
+        }
+      );
+
+      if (response.data && response.data.data) {
+        dispatch(stopLoading());
+        // Refresh the children list to get updated data
+        return response.data.data;
+      } else {
+        throw new Error("Invalid response format");
+      }
+    } catch (error) {
+      console.error("Update user error:", error);
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to update user account";
+      dispatch(setError(errorMessage));
+      throw error;
+    }
+  };

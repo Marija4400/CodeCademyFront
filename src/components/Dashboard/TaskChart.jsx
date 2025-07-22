@@ -1,54 +1,72 @@
+import { getAllChildStatistics } from "@/api/services/parentService";
+import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
+import { useDispatch } from "react-redux";
 
 const TaskChart = () => {
+  const dispatch = useDispatch();
+  const [labels, setLabels] = useState([]);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchStatistics = async () => {
+      try {
+        const response = await getAllChildStatistics()(dispatch);
+
+        const names = response.map((entry) => entry.child.username);
+        const sectionsCompleted = response.map(
+          (entry) => entry.sections.length
+        );
+
+        setLabels(names);
+        setData(sectionsCompleted);
+      } catch (error) {
+        console.error("Greška pri učitavanju statistike:", error);
+      }
+    };
+
+    fetchStatistics();
+  }, [dispatch]);
+
   const chartConfig = {
-    type: "line",
-    height: 300,
+    type: "bar",
+    height: 400,
     series: [
       {
-        name: "Završeni zadaci",
-        data: [1, 2, 3, 2, 4, 3, 5], // Ovdje stavi broj uradjenih zadataka za 7 dana
+        name: "Završene sekcije",
+        data: data,
       },
     ],
     options: {
-      colors: ["#9333ea"],
       chart: {
-        toolbar: {
-          show: false,
-        },
-        zoom: {
-          enabled: false,
+        id: "children-statistics",
+        toolbar: { show: false },
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: "40%",
         },
       },
       title: {
-        text: "Završeni zadaci na nedeljnom niovu",
+        text: "Završene sekcije po nalogu deteta",
         align: "center",
       },
       xaxis: {
-        categories: [
-          "Ponedeljak",
-          "Utorak",
-          "Sreda",
-          "Četvrtak",
-          "Petak",
-          "Subota",
-          "Nedelja",
-        ], // Dan 1 - Dan 7
+        categories: labels,
         title: {
-          text: "Dani u nedelji",
+          text: "Deca",
         },
       },
       yaxis: {
         title: {
-          text: "Zadaci",
+          text: "Broj završenih sekcija",
         },
-        min: 0, // Minimum value na Y osi
+        min: 0,
+        forceNiceScale: true,
       },
-      stroke: {
-        curve: "smooth",
-      },
-      markers: {
-        size: 5,
+      colors: ["#9333ea"],
+      dataLabels: {
+        enabled: true,
       },
       tooltip: {
         theme: "dark",
@@ -57,7 +75,7 @@ const TaskChart = () => {
   };
 
   return (
-    <div className="p-4 rounded-lg ">
+    <div className="p-4 rounded-lg shadow-md">
       <Chart {...chartConfig} />
     </div>
   );

@@ -4,7 +4,11 @@ import { NeonGlow } from "../../assets";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteUserByAdmin, getAllUsers } from "@/api/services/adminService";
+import {
+  deleteUserByAdmin,
+  getAllUsers,
+  updateUserAccountByAdmin,
+} from "@/api/services/adminService";
 
 const AccountTable = () => {
   const dispatch = useDispatch();
@@ -26,15 +30,27 @@ const AccountTable = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [deletingUser, setDeletingUser] = useState(null);
 
-  const handleEditSave = () => {
-    // Ova funkcija može da šalje PATCH/PUT request ako želiš backend izmenu
-    setEditingUser(null);
+  const handleEditSave = async () => {
+    try {
+      if (!editingUser?.id) return;
+
+      const updateData = {
+        username: editingUser.username,
+        email: editingUser.email,
+        password: editingUser.password,
+      };
+      await dispatch(updateUserAccountByAdmin(editingUser.id, updateData));
+      await dispatch(getAllUsers());
+      setEditingUser(null);
+    } catch (error) {
+      console.error("Greška pri izmeni korisnika:", error);
+    }
   };
 
   const handleDeleteConfirm = async () => {
     try {
       dispatch(deleteUserByAdmin(deletingUser.id));
-      dispatch(getAllUsers()); // Osveži listu korisnika
+      dispatch(getAllUsers());
       setDeletingUser(null);
     } catch (error) {
       console.error("Greška pri brisanju:", error);
@@ -139,6 +155,18 @@ const AccountTable = () => {
                       })
                     }
                     placeholder="Email"
+                  />
+                  <input
+                    type="password"
+                    className="w-full p-2 border border-purple-600 rounded bg-n-8/90"
+                    value={editingUser.password}
+                    onChange={(e) =>
+                      setEditingUser({
+                        ...editingUser,
+                        password: e.target.value,
+                      })
+                    }
+                    placeholder="Lozinka"
                   />
                   <div className="flex justify-end pt-2 space-x-2">
                     <button

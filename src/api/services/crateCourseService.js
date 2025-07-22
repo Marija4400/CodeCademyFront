@@ -1,10 +1,10 @@
-import axios from "@/api/axiosConfig";
+import axios from "axios";
 import {
   startLoading,
   stopLoading,
   setError,
   setSuccess,
-} from "@/store/courseSlice";
+} from "@/api/slices/createCourseSlice";
 
 // Kreiraj novi kurs
 export const createCourse = (courseData, imageFile) => async (dispatch) => {

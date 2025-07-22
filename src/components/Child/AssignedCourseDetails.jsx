@@ -5,6 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getCourseQuizzesC } from "@/api/services/quizChildService";
 import { getChildCourseSections } from "@/api/services/childCourseSectionService";
+import {
+  generateCertificate,
+  markCourseAsFinished,
+  markSectionAsFinished,
+} from "@/api/services/childService";
+import InfoPopup from "../InfoPopup";
+import MediaRenderer from "./MediaRenderer";
 
 const AssignedCourseDetails = () => {
   const { id } = useParams();
@@ -17,8 +24,7 @@ const AssignedCourseDetails = () => {
     dispatch(getCourseQuizzesC(id));
   }, [dispatch, id]);
 
-  // show sections and quizzes in the left sidebar
-  const sectionItems = sections.map((sec, index) => ({
+  const sectionItems = sections.map((sec) => ({
     ...sec,
     type: "section",
   }));
@@ -32,22 +38,68 @@ const AssignedCourseDetails = () => {
   const [progress, setProgress] = useState({});
   const [selectedTestAnswers, setSelectedTestAnswers] = useState({});
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [certificateGenerated, setCertificateGenerated] = useState(false);
+
   const correctSoundRef = useRef(null);
   const wrongSoundRef = useRef(null);
 
   const currentItem = items[currentIndex];
   const isQuiz = currentItem?.type === "quiz";
 
-  const markCompleted = () => {
+  const markCompleted = async () => {
     const key = isQuiz ? `quiz` : `${currentIndex}`;
     setProgress((prev) => ({ ...prev, [key]: true }));
+
+    if (!isQuiz) {
+      const currentSection = sections[currentIndex];
+      if (currentSection?.id) {
+        try {
+          await dispatch(markSectionAsFinished(parseInt(currentSection.id)));
+          console.log("Section marked as finished:", currentSection.title);
+        } catch (err) {
+          console.error("Greška pri označavanju sekcije kao završene:", err);
+        }
+      }
+    }
+  };
+
+  const handleQuizFinish = async () => {
+    try {
+      // 1. Označi kurs kao završen
+      await markCourseAsFinished(parseInt(id))(dispatch);
+
+      // 2. Generiši sertifikat
+      const certResponse = await generateCertificate(parseInt(id))(dispatch);
+
+      // 3. Skini sertifikat kao PDF
+      const blob = new Blob([certResponse], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "sertifikat.pdf";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      // 4. Prikaži popup obaveštenje
+      setCertificateGenerated(true);
+      setCurrentIndex(0);
+      setCurrentQuestionIndex(0);
+      setSelectedTestAnswers({});
+      setProgress({});
+    } catch (err) {
+      console.error(
+        "Greška prilikom završavanja kursa ili generisanja sertifikata:",
+        err
+      );
+    }
   };
 
   const goNext = () => {
     const nextIndex = currentIndex + 1;
     if (nextIndex < items.length) {
       setCurrentIndex(nextIndex);
-      setCurrentQuestionIndex(0); // reset pitanja za kviz
+      setCurrentQuestionIndex(0);
     } else {
       alert("Uspešno ste završili kurs!");
     }
@@ -66,6 +118,16 @@ const AssignedCourseDetails = () => {
       wrongSoundRef.current?.play();
     }
   };
+
+  useEffect(() => {
+    if (certificateGenerated) {
+      const timer = setTimeout(() => {
+        setCertificateGenerated(false);
+      }, 2000);
+
+      return () => clearTimeout(timer); // cleanup
+    }
+  }, [certificateGenerated]);
 
   return (
     <Section>
@@ -115,7 +177,7 @@ const AssignedCourseDetails = () => {
             )}
           </div>
 
-          {/* Glavni prikaz */}
+          {/* Main content */}
           <div className="w-full p-6 border border-purple-600 rounded-lg lg:w-2/3 bg-n-8">
             <h1 className="mb-4 text-2xl font-bold">{currentItem?.title}</h1>
 
@@ -163,8 +225,7 @@ const AssignedCourseDetails = () => {
                         currentQuestionIndex ===
                         currentItem.questions.length - 1
                       ) {
-                        markCompleted();
-                        goNext();
+                        handleQuizFinish();
                       } else {
                         setCurrentQuestionIndex(currentQuestionIndex + 1);
                       }
@@ -183,6 +244,10 @@ const AssignedCourseDetails = () => {
             ) : (
               <>
                 <p className="whitespace-pre-wrap">{currentItem?.content}</p>
+                {/* Prikaz slike ako postoji */}
+                {currentItem?.photo && (
+                  <MediaRenderer fileName={currentItem.photo} />
+                )}
                 <div className="mt-6 space-x-4">
                   <button
                     onClick={() => {
@@ -204,6 +269,16 @@ const AssignedCourseDetails = () => {
         <audio ref={correctSoundRef} src={correct} />
         <audio ref={wrongSoundRef} src={incorrect} />
       </div>
+
+      {certificateGenerated ? (
+        <div className="fixed z-50 p-4 text-white transition-opacity duration-500 bg-green-600 rounded shadow-lg bottom-4 right-4">
+          <p className="mb-2 font-bold">
+            Čestitamo! Sertifikat je generisan 🎉
+          </p>
+        </div>
+      ) : (
+        <InfoPopup type="error" text="Sertifikat je prethodno generisan." />
+      )}
     </Section>
   );
 };

@@ -7,6 +7,7 @@ import CreatedAccoutTable from "./CreatedAccoutTable";
 import TaskChart from "./TaskChart";
 import {
   createChildrenProfile,
+  getAllChildStatistics,
   getChildren,
 } from "../../api/services/parentService";
 import InfoPopup from "../InfoPopup";

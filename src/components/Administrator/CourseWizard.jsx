@@ -4,16 +4,22 @@ import Section from "../Section";
 import { NeonGlow } from "../../assets";
 import CourseInfoForm from "./CourseInfoForm";
 import QuizForm from "./QuizForm";
-import LessonForm from "./AddLesson";
 import InfoPopup from "../InfoPopup";
+import { createCourse } from "@/api/services/crateCourseService";
+import { useDispatch } from "react-redux";
+import { createQuiz } from "@/api/services/createaQuizService";
+import SectionForm from "./AddLesson";
 
 const CourseWizard = () => {
+  const dispatch = useDispatch();
+
   const [step, setStep] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [courseData, setCourseData] = useState({
     title: "",
     description: "",
-    lessons: [],
+    photo: null,
+    sections: [],
     quiz: [],
   });
 
@@ -26,6 +32,53 @@ const CourseWizard = () => {
 
   const onClose = () => {
     setShowModal(false);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const { title, description, sections, quiz } = courseData;
+
+      const coursePayload = {
+        title,
+        description,
+        level: 1,
+        duration: 120,
+        photo: "",
+        sections,
+      };
+
+      const courseResponse = await dispatch(createCourse(coursePayload, null));
+      console.log("Course created:", courseResponse);
+      const courseId = courseResponse?.data?.id;
+
+      if (!courseId) throw new Error("Course ID not returned");
+
+      const quizPayload = {
+        title,
+        description,
+        courseId,
+        questions: quiz.map((q) => ({
+          question: q.question,
+          answers: q.answers.map((a, idx) => ({
+            answer: a,
+            correct: idx === q.correctIndex,
+          })),
+        })),
+      };
+
+      await dispatch(createQuiz(quizPayload));
+
+      setCourseData({
+        title: "",
+        description: "",
+        sections: [],
+        quiz: [],
+      });
+      setStep(1);
+      setShowModal(true);
+    } catch (err) {
+      console.error("Error submitting course and quiz:", err);
+    }
   };
 
   return (
@@ -47,7 +100,7 @@ const CourseWizard = () => {
             />
           )}
           {step === 2 && (
-            <LessonForm
+            <SectionForm
               data={courseData}
               onNext={nextStep}
               onBack={prevStep}
@@ -58,17 +111,7 @@ const CourseWizard = () => {
             <QuizForm
               data={courseData}
               onBack={prevStep}
-              onSubmit={() => {
-                console.log("Final Data", courseData);
-                setCourseData({
-                  title: "",
-                  description: "",
-                  lessons: [],
-                  quiz: [],
-                });
-                setStep(1);
-                setShowModal(true);
-              }}
+              onSubmit={handleSubmit}
               onUpdate={updateCourseData}
             />
           )}
@@ -76,7 +119,7 @@ const CourseWizard = () => {
         {showModal && (
           <InfoPopup
             type={"success"}
-            text={"Uspesno dodat kurs!"}
+            text={"Uspešno dodat kurs!"}
             onClose={onClose}
           />
         )}

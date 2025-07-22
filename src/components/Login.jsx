@@ -57,7 +57,7 @@ const Login = () => {
               className="flex items-center gap-2 mb-6 text-2xl font-bold cursor-pointer md:text-3xl"
               onClick={() => navigate("/")}
             >
-              🏆 CodeCademy
+              🏆 ByteLearn
             </h2>
             <ul className="space-y-3 text-fuchsia-200">
               <li>
