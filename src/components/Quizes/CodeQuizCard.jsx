@@ -15,7 +15,7 @@ export default function CodeQuizCard({ id, title, description }) {
       >
         <div className="h-full w-full bg-[#0f0f1a] rounded-[24px] p-6 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between mb-4">
               <h3 className="font-mono text-xl text-white">{title}</h3>
             </div>
             <p className="text-sm font-light text-gray-400 h-[80px] overflow-y-auto">

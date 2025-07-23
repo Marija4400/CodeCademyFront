@@ -107,7 +107,7 @@ const Register = () => {
           </p>
         </div>
         {registrationSuccess && (
-          <InfoPopup text="Uspešno ste se registrovali!" type="success" />
+          <InfoPopup text="Uspešno ste registrovali nalog!" type="success" />
         )}
       </div>
     </Section>

@@ -62,11 +62,6 @@ export const navigation = [
     title: "Mogućnosti",
     url: "/#how-to-use",
   },
-  {
-    id: "3",
-    title: "Komentari",
-    url: "/#comments",
-  },
 ];
 
 export const dashboardHeader = [
@@ -316,7 +311,7 @@ export const benefits = [
   {
     id: "3",
     title: "Sigurno i bezbedno učenje",
-    text: "Bezbednost tvojih podataka je naš prioritet. Bez reklama, bez praćenja, bez distrakcija.",
+    text: "Bezbednost tvojih podataka je naš prioritet. Nema deljenja osetljivih informacija.",
     backgroundUrl: card3,
     iconUrl: benefitIcon4,
     imageUrl: benefitImage2,
@@ -325,7 +320,7 @@ export const benefits = [
   {
     id: "4",
     title: "Praćenje napretka",
-    text: "Prati koje si lekcije završio, koje oblasti su ti jače i gde ti treba dodatno vežbanje.",
+    text: "Roditelji imaju mogućnost da prate napredak svog deteta kroz izveštaje o završenim sekcijama.",
     backgroundUrl: card4,
     iconUrl: benefitIcon1,
     imageUrl: benefitImage2,
@@ -343,7 +338,7 @@ export const benefits = [
   {
     id: "6",
     title: "Vežbe po temama",
-    text: "Uči ono što te trenutno zanima – bilo da je to JavaScript petlje, React komponenta ili backend razvoj. Lekcije su podeljene po oblastima.",
+    text: "Uči ono što te trenutno zanima – tempom koji samo tebi odgovara.",
     backgroundUrl: card6,
     iconUrl: benefitIcon3,
     imageUrl: benefitImage2,

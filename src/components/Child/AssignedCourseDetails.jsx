@@ -142,7 +142,7 @@ const AssignedCourseDetails = () => {
 
         <div className="flex flex-col w-full gap-4 px-4 mt-10 font-sans lg:flex-row lg:px-20">
           {/* Sidebar */}
-          <div className="w-full p-4 overflow-y-auto border border-purple-600 rounded-lg lg:w-1/3 bg-n-8 lg:h-[800px]">
+          <div className="w-full p-4 overflow-y-auto border border-purple-600 rounded-lg lg:w-1/3 bg-n-8 ">
             <h2 className="mb-4 text-xl font-bold">Kurs</h2>
             {sections.map((sec, index) => (
               <div key={sec.id} className="mb-4">
@@ -184,7 +184,7 @@ const AssignedCourseDetails = () => {
             {isQuiz ? (
               <div className="flex flex-col justify-center p-4 border border-purple-600 rounded-lg">
                 <div className="flex flex-col w-full mb-4 lg:w-1/2">
-                  <p className="font-semibold">
+                  <p className="mb-3 font-semibold">
                     {currentItem.questions[currentQuestionIndex].question}
                   </p>
                   {currentItem.questions[currentQuestionIndex].answers.map(
@@ -270,14 +270,12 @@ const AssignedCourseDetails = () => {
         <audio ref={wrongSoundRef} src={incorrect} />
       </div>
 
-      {certificateGenerated ? (
+      {certificateGenerated && (
         <div className="fixed z-50 p-4 text-white transition-opacity duration-500 bg-green-600 rounded shadow-lg bottom-4 right-4">
           <p className="mb-2 font-bold">
             Čestitamo! Sertifikat je generisan 🎉
           </p>
         </div>
-      ) : (
-        <InfoPopup type="error" text="Sertifikat je prethodno generisan." />
       )}
     </Section>
   );

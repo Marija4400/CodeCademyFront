@@ -63,14 +63,14 @@ const Dashboard = () => {
 
             <div className="mt-4">
               <Item
-                title="naslov"
-                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam."
+                title="Statistika"
+                content="Kreiranjem naloga omogućićete detetu pristup kursevima, zadacima i testovima. Svaki nalog ima individualni napredak i može se nadgledati sa roditeljskog profila. Dijagram prikazuje broj završeniih sekcija po kursu."
               />
             </div>
             <div className="mt-4">
               <Item
-                title="naslov"
-                content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. asjdbashjdbasjdhasjkdjas dajhbasjbdajbd asj dbasjdbasjbb djsabd a"
+                title="Napomena za roditelje"
+                content="Ova platforma omogućava da svako dete ima svoj personalizovani pristup. Možete u svakom trenutku pratiti njihov napredak i pristup zadacima i kvizovima u realnom vremenu."
               />
             </div>
           </div>

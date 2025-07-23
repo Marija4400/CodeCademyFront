@@ -15,13 +15,13 @@ export default function Card({ id, title, description, level, duration }) {
       >
         <div className="h-full w-full bg-[#0f0f1a] rounded-[24px] p-6 flex flex-col justify-between">
           <div>
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="font-mono text-xl text-white">{title}</h3>
-              <span className="px-2 py-1 text-xs font-semibold text-purple-200 bg-purple-900 rounded-full">
+            <div className="flex flex-col col-auto mb-2">
+              <span className="w-1/4 px-2 py-1 mb-2 text-xs font-semibold text-purple-200 bg-purple-900 rounded-full">
                 {level}
               </span>
+              <h3 className="font-mono text-xl text-white">{title}</h3>
             </div>
-            <p className="text-sm font-light text-gray-400 h-[80px] overflow-y-auto">
+            <p className="text-sm font-light text-gray-400 h-[80px] overflow-hidden text-ellipsis mb-2">
               {description}
             </p>
           </div>
@@ -33,7 +33,7 @@ export default function Card({ id, title, description, level, duration }) {
             </div>
             <button
               onClick={() => navigate(`/courseDetails/${id}`)}
-              className="flex items-center gap-1 text-sm font-bold tracking-wider text-white uppercase hover:text-purple-400 transition-colors"
+              className="flex items-center gap-1 text-sm font-bold tracking-wider text-white uppercase transition-colors hover:text-purple-400"
             >
               Pogledaj detalje <ArrowRightIcon className="w-5 h-5" />
             </button>

@@ -32,7 +32,7 @@ const MediaRenderer = ({ fileName }) => {
       <img
         src={mediaUrl}
         alt="Section Media"
-        className="w-full max-h-[400px] object-contain rounded border border-purple-500"
+        className="w-full max-h-[400px] object-contain shadow-lg"
       />
     </div>
   );
