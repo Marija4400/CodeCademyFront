@@ -39,9 +39,7 @@ const SectionForm = ({ data, onNext, onBack, onUpdate }) => {
 
   return (
     <div>
-      <h2 className="mb-4 text-xl font-semibold bg-yellow-100">
-        Dodaj sekciju
-      </h2>
+      <h2 className="mb-4 text-xl font-semibold ">Dodaj sekciju</h2>
 
       <input
         type="text"

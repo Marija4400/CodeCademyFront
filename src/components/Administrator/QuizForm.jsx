@@ -33,9 +33,7 @@ const QuizForm = ({ data, onBack, onSubmit, onUpdate }) => {
 
   return (
     <div>
-      <h2 className="mb-4 text-xl font-semibold bg-red-500">
-        Dodaj pitanje za kviz
-      </h2>
+      <h2 className="mb-4 text-xl font-semibold ">Dodaj pitanje za kviz</h2>
 
       <input
         type="text"
